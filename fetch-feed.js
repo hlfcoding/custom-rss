@@ -1,23 +1,23 @@
-const http = require('http');
-const log = require('./util').log;
+var http = require('http');
+var log = require('./util').log;
 
 module.exports = function fetchFeed(delegate) {
-  let request = http.request(delegate.url);
+  var request = http.request(delegate.url);
 
-  request.on('error', (e) => {
+  request.on('error', function(e) {
     log(e.message);
     delegate.on.error(e);
-  });
 
-  request.on('response', (response) => {
-    log(`STATUS: ${response.statusCode}`);
-    log(`HEADERS: ${JSON.stringify(response.headers)}`);
+  }).on('response', function(response) {
+    log("STATUS: "+ response.statusCode);
+    log("HEADERS: "+ JSON.stringify(response.headers));
 
-    let data = '';
+    var data = '';
     response.setEncoding('utf8');
-    response.on('data', (chunk) => data += chunk);
-    response.on('end', () => {
-      log(`DATA: ${data}`);
+    response.on('data', function(chunk) {
+      data += chunk; 
+    }).on('end', function() {
+      log("DATA: "+ data);
       delegate.on.response(response, data);
     });
   });

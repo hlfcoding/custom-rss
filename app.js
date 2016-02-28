@@ -1,8 +1,8 @@
-let app = require('connect')();
+var app = require('connect')();
 
 app.use('/hacker-news', require('./feeds/hacker-news'));
 
-app.use((request, response) => {
+app.use(function(request, response) {
   response.statusCode = 404;
   response.end('Feed not found!\n');
 });
