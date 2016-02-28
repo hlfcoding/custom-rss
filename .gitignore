@@ -37,3 +37,6 @@ node_modules/**/*file
 
 # Optional REPL history
 .node_repl_history
+
+# Additions
+*.sublime-workspace
