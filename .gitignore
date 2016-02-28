@@ -25,10 +25,14 @@ build/Release
 
 # Dependency directory
 # node_modules # For deployment
+node_modules/.bin
+node_modules/supervisor
 node_modules/**/.npmignore
 node_modules/**/.*rc
 node_modules/**/*.md
 node_modules/**/*.yml
+node_modules/**/bower.json
+node_modules/**/component.json
 node_modules/**/LICENSE*
 node_modules/**/*file
 
