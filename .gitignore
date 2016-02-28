@@ -24,7 +24,13 @@ coverage
 build/Release
 
 # Dependency directory
-node_modules
+# node_modules # For deployment
+node_modules/**/.npmignore
+node_modules/**/.*rc
+node_modules/**/*.md
+node_modules/**/*.yml
+node_modules/**/LICENSE*
+node_modules/**/*file
 
 # Optional npm cache directory
 .npm
