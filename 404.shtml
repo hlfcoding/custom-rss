@@ -1,0 +1,23 @@
+<div style="
+  font-size: 24px;
+  left: 50%;
+  margin: -6em -8em;
+  position: absolute;
+  width: 16em;
+  top: 50%;
+  ">
+<pre style="
+  font-family: 'Courier New';
+  margin-bottom: 1em;
+  margin-top: 0;
+  ">
+ __         __       ___
+/\ \       /\ \     / __\
+\ \ \___   \ \ \   /\ \_/_
+ \ \  __`\  \ \ \  \ \  __\
+  \ \ \ \ \  \ \ \  \ \ \_/
+   \ \_\ \_\  \ \_\  \ \_\
+    \/_/ /_/   \/_/   \/_/
+</pre>
+<div style="text-align: center">ERROR: 404: NOT FOUND</div>
+</div>

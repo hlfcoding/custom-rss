@@ -44,3 +44,4 @@ node_modules/**/*file
 
 # Additions
 *.sublime-workspace
+tmp/*

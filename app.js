@@ -1,10 +1,18 @@
 var app = require('connect')();
+var fs = require('fs');
 
 app.use('/hacker-news', require('./feeds/hacker-news'));
 
 app.use(function(request, response) {
   response.statusCode = 404;
-  response.end('Feed not found!\n');
+  fs.readFile(__dirname +'/404.shtml', function(error, data) {
+    if (error) {
+      response.end('Feed not found!\n');
+    } else {
+      response.setHeader('Content-Type', 'text/html');
+      response.end(data);
+    }
+  });
 });
 
 require('http').createServer(app).listen(3000);

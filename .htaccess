@@ -1,3 +1,7 @@
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} !http://custom-rss\.pengxwang\.com/.* [NC]
+RewriteRule \.(js|json)$ - [F]
+
 PassengerEnabled on
 PassengerAppRoot /home/pengxwan/custom-rss
 SetEnv NODE_ENV production
