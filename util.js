@@ -12,8 +12,16 @@ function debugLog(label, string) {
   log(string +'\n');
 }
 
+var patterns = {
+  domain: /:\/\/(?:www\.)?([^\/]+)/,
+  createFromTokens: function(escapedTokens) {
+    return new RegExp('\\b('+ escapedTokens.join('|') +')\\b');
+  }
+};
+
 module.exports = {
   log: (mode !== 'development') ? noop : debugLog,
   mode: mode,
+  patterns: patterns,
   track: log
 };
