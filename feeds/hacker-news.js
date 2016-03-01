@@ -25,6 +25,8 @@ function createDomainSuffix(entry) {
 
 function filterFeed(string, verbose) {
   var root = createXMLTransformer(string);
+  transformMeta(root);
+
   var skipped = [];
   var entry, isNoise, title;
   while ((entry = root.find('entry'))) {
@@ -42,6 +44,7 @@ function filterFeed(string, verbose) {
     log('entry', (verbose ? entry.string : entry.string.length));
   }
   track('Skipped '+ skipped.length +' for Hacker News\n'+ skipped.join('\n'));
+
   return root.string;
 }
 
@@ -49,6 +52,9 @@ function shouldSkipEntry(entry, criteria) {
   return rUninterestingTopics.test(criteria.title);
 }
 
+function transformMeta(root) {
+  root.transformContent('title', { to: 'Hacker News (filtered)' });
+}
 
 function transformTitle(entry) {
   function replace(match) {
