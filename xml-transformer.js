@@ -77,7 +77,7 @@ module.exports = function createXMLTransformer(string) {
       this.replaceChildString('');
     },
 
-    tranformContent: function(tagName, args) {
+    transformContent: function(tagName, args) {
       var string = this.find(tagName);
       if (typeof string !== 'string') {
         throw 'only replaces string';

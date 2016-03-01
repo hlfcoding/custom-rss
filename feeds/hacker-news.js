@@ -55,7 +55,7 @@ function transformTitle(entry) {
     replaced += domainSuffix;
     return replaced;
   }
-  entry.tranformContent('title', { to: replace });
+  entry.transformContent('title', { to: replace });
 }
 
 module.exports = function(request, response) {
