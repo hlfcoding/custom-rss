@@ -4,7 +4,6 @@ var log = require('../util').log;
 var patterns = require('../util').patterns;
 var track = require('../util').track;
 
-var rDomain = patterns.domain;
 var rScorePrefix = /^\d+\s+\S+\s+/;
 var rUninterestingTopics = patterns.createFromTokens([
 
@@ -17,6 +16,11 @@ var rUninterestingTopics = patterns.createFromTokens([
 var url = 'http://hnapp.com/rss?q=' + 
   '-type%3Acomment%20-type%3Aask%20-type%3Ashow%20-type%3Ajob%20' +
   '-host%3Aqz.com%20-host%3Ayahoo.com';
+
+function createDomainSuffix(entry) {
+  var link = entry.find('link', 'href') || '';
+  return (!link.length ? '' : ' ('+link.match(patterns.domain)[1]+')');
+}
 
 function filterFeed(string, verbose) {
   var root = createXMLTransformer(string);
@@ -44,15 +48,13 @@ function shouldSkipEntry(entry, criteria) {
   return rUninterestingTopics.test(criteria.title);
 }
 
-function transformTitle(entry) {
-  var link = entry.find('link', 'href') || '';
-  var domainSuffix = (!link.length ? '' : ' ('+link.match(rDomain)[1]+')');
 
+function transformTitle(entry) {
   function replace(match) {
     // No score.
     var replaced = match.replace(rScorePrefix, '');
     // Add domain if any.
-    replaced += domainSuffix;
+    replaced += createDomainSuffix(entry);
     return replaced;
   }
   entry.transformContent('title', { to: replace });
