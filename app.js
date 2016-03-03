@@ -1,7 +1,11 @@
 var app = require('connect')();
 var fs = require('fs');
+var config = require('./config');
 
-app.use('/hacker-news', require('./src/feeds/hacker-news'));
+config.feeds.forEach(function(feed) {
+  var middleware = require('./src/feeds/'+ feed.name);
+  app.use('/'+ feed.name, middleware.bind(null, feed));
+});
 
 app.use(function(request, response) {
   response.statusCode = 404;

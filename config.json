@@ -1,0 +1,28 @@
+{
+  "feeds": [
+    {
+      "name": "hacker-news",
+
+      "hnappQuery": "score>1%20%7C%20comments>1%20-type%3Acomment%20-type%3Aask%20-type%3Ashow%20-type%3Ajob%20-host%3Aqz.com%20-host%3Ayahoo.com",
+
+      "filters": [
+        {
+          "name": "uninteresting-topics",
+          "type": "blacklist",
+          "tokens": [
+            "#C", "\\.NET", "Angular", "BEM", "DuckDuckGo", "Java", "Kotlin",
+            "Lua", "MatLab", "OCAML", "Perl", "R", "Raspberry Pi", "Rust",
+            "Surface Pro", "Xamarin"
+          ]
+        },
+        {
+          "name": "tired-topics",
+          "type": "blacklist",
+          "tokens": [
+            "Trump", "Bernie", "Hillary"
+          ]
+        }
+      ]
+    }
+  ]
+}
