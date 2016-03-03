@@ -1,7 +1,7 @@
 var app = require('connect')();
 var fs = require('fs');
 
-app.use('/hacker-news', require('./feeds/hacker-news'));
+app.use('/hacker-news', require('./src/feeds/hacker-news'));
 
 app.use(function(request, response) {
   response.statusCode = 404;

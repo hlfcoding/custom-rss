@@ -6,11 +6,12 @@ var track = require('../util').track;
 
 var rScorePrefix = /^\d+\s+\S+\s+/;
 var rUninterestingTopics = patterns.createFromTokens([
-
+  // Technical.
   '#C', '\\.NET', 'Angular', 'BEM', 'DuckDuckGo', 'Java', 'Kotlin',
   'Lua', 'MatLab', 'OCAML', 'Perl', 'R', 'Raspberry Pi', 'Rust',
-  'Surface Pro', 'Xamarin'
-
+  'Surface Pro', 'Xamarin',
+  // Timely.
+  'Trump', 'Bernie', 'Hillary'
 ]);
 
 var url = 'http://hnapp.com/rss?q=' +
