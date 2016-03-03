@@ -9,7 +9,7 @@
     "develop": "supervisor --watch . --debug -- --use_strict app.js",
     "deploy:start": "rm -rf node_modules/* && npm install --production",
     "deploy:end": "rm -rf node_modules/* && npm install",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --use_strict tests/*-tests.js"
   },
   "keywords": [],
   "author": "Peng Wang <peng@pengxwang.com>",
