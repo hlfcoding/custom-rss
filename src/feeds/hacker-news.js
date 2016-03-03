@@ -71,14 +71,12 @@ function transformTitle(entry) {
 module.exports = function(request, response) {
   fetchFeed({
     url: url,
-    on: {
-      response: function(r, data) {
-        response.setHeader('Content-Type', r.headers['content-type']);
-        response.end(filterFeed(data));
-      },
-      error: function(e) {
-        response.end(e.message);
-      }
+    onResponse: function(r, data) {
+      response.setHeader('Content-Type', r.headers['content-type']);
+      response.end(filterFeed(data));
+    },
+    onError: function(e) {
+      response.end(e.message);
     }
   });
 };

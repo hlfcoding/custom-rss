@@ -1,12 +1,12 @@
 var http = require('http');
 var log = require('./util').log;
 
-module.exports = function fetchFeed(delegate, verbose) {
+module.exports = function fetchFeed(delegate) {
   var request = http.request(delegate.url);
 
   request.on('error', function(e) {
     log(e.message);
-    delegate.on.error(e);
+    delegate.onError(e);
 
   }).on('response', function(response) {
     log('status', response.statusCode);
@@ -17,8 +17,8 @@ module.exports = function fetchFeed(delegate, verbose) {
     response.on('data', function(chunk) {
       data += chunk; 
     }).on('end', function() {
-      if (verbose) { log('data', data); }
-      delegate.on.response(response, data);
+      if (delegate.verbose) { log('data', data); }
+      delegate.onResponse(response, data);
     });
   });
 
