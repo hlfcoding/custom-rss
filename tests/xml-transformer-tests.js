@@ -8,13 +8,13 @@ runner.subject('createXMLTransformer');
 
 var root;
 runner.beforeEach(function() {
-  root = createXMLTransformer([
+  root = createXMLTransformer({ string: [
     '<root>\n',
     '\t<entry rel-src="/foo.html">\n\t\t<title>foo</title>\n\t</entry>\n',
     '\t<entry rel-src="/bar.html">\n\t\t<title>bar</title>\n\t</entry>\n',
     '\t<entry rel-src="/baz.html">\n\t\t<title>baz</title>\n\t</entry>\n',
     '</root>\n',
-  ].join(''));
+  ].join('') });
 
   root.findNext = function() {
     this.next();

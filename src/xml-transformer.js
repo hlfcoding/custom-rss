@@ -33,7 +33,7 @@ function lazyCreateTagRegExp(tagName) {
   return rTags[tagName];
 }
 
-module.exports = function createXMLTransformer(string) {
+module.exports = function createXMLTransformer(delegate) {
   return {
     creator: createXMLTransformer,
 
@@ -67,8 +67,10 @@ module.exports = function createXMLTransformer(string) {
       if ((mr = this.matchResults)) {
         nextCursor = this.cursor + mr.index + mr[0].length;
         if (nextCursor < this.string.length) {
-
           this.cursor = nextCursor;
+          if (delegate.verbose) {
+            log('next', this.cursor, this.scope().substr(0, 300));
+          }
           return true;
         }
       }
@@ -90,6 +92,9 @@ module.exports = function createXMLTransformer(string) {
         throw 'only replaces string';
       }
       args.from = args.from || string;
+      if (delegate.verbose) {
+        log('transform', tagName, args.from, args.to);
+      }
 
       this.cursor = this.matchResults.index;
       this.replaceFromCursor(args.from, args.to);
@@ -104,17 +109,20 @@ module.exports = function createXMLTransformer(string) {
     child: null,
     cursor: 0,
     matchResults: null,
-    originalString: string,
+    originalString: delegate.string,
     parent: null,
-    string: string,
+    string: delegate.string,
 
     lazyCreateChild: function(string) {
       if (!this.child || this.child.string !== string) {
         if (this.child) {
           this.child.parent = null;
         }
-        this.child = createXMLTransformer(string);
+        this.child = createXMLTransformer({ string: string, verbose: delegate.verbose });
         this.child.parent = this;
+        if (delegate.verbose) {
+          log('child', string);
+        }
       }
     },
 
@@ -132,13 +140,15 @@ module.exports = function createXMLTransformer(string) {
       var rest = this.string.substring(0, this.cursor);
       var replaced = this.string.substring(this.cursor)
         .replace(pattern, replacement);
+
+      var oldString = this.string;
       this.string = rest + replaced;
+      if (delegate.verbose) {
+        log('replace', oldString.length, this.string.length);
+      }
     },
 
     replaceChildString: function(replacement) {
-      if (typeof string !== 'string') {
-        throw 'Replace can only occur on a string.';
-      }
       var c = this.child;
       replacement = replacement || c.string;
       this.replaceFromCursor(c.originalString, replacement);

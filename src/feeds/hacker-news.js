@@ -41,7 +41,8 @@ module.exports = function(config, request, response) {
         data: data,
         shouldSkipEntry: shouldSkipEntry,
         transformMeta: transformMeta,
-        transformEntry: transformTitle
+        transformEntry: transformTitle,
+        verbose: true
       });
       response.end(data);
     },
