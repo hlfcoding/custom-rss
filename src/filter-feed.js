@@ -27,8 +27,8 @@ module.exports = function filterFeed(delegate) {
       skipped.push(entry.find('link'));
     } else {
       delegate.transformEntry(entry);
+      root.next();
     }
-    root.next();
   }
   track('Skipped '+ skipped.length +' for '+ delegate.config.name +'\n'+
     skipped.join('\n'));
