@@ -7,8 +7,9 @@ module.exports = function fetchFeed(delegate) {
   request.on('error', function(e) {
     log(e.message);
     delegate.onError(e);
+  });
 
-  }).on('response', function(response) {
+  request.on('response', function(response) {
     log('status', response.statusCode);
     log('headers', JSON.stringify(response.headers));
 
