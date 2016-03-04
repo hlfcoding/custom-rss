@@ -78,7 +78,6 @@ module.exports = function createXMLTransformer(delegate) {
     },
 
     skip: function() {
-      this.cursor = this.matchResults.index;
       this.replaceFromCursor(this.matchingTag(), '');
 
       if (this.parent) {
@@ -96,12 +95,13 @@ module.exports = function createXMLTransformer(delegate) {
         log('transform', tagName, args.from, args.to);
       }
 
-      this.cursor = this.matchResults.index;
       this.replaceFromCursor(args.from, args.to);
 
       if (this.parent) {
         this.parent.replaceChildString();
       }
+
+      return this;
     },
 
     // Internal:
@@ -137,6 +137,10 @@ module.exports = function createXMLTransformer(delegate) {
     },
 
     replaceFromCursor: function(pattern, replacement) {
+      if (this.cursor === 0) {
+        this.cursor = this.matchResults.index;
+      }
+
       var rest = this.string.substring(0, this.cursor);
       var replaced = this.scope().replace(pattern, replacement);
 

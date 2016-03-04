@@ -81,8 +81,16 @@ test("transforms tag content based on 'from' and 'to' patterns", function() {
   root.transformContent('title', { from: /f(oo)/, to: 'b$1' });
   assert.equal(root.find('title'), 'boo', 'partially replaces content');
 
-  root.transformContent('title', { to: 'new' });
-  assert.equal(root.find('title'), 'new', "defaults 'from' to full content");
+  root.transformContent('title', { to: '$& boo' });
+  assert.equal(root.find('title'), 'boo boo', "defaults 'from' to full content");
+});
+
+test('transforms content of successive tags reliably', function() {
+  root.transformContent('title', { to: '$& (foo)' }).next();
+  root.transformContent('title', { to: '$& (bar)' }).next();
+  root.transformContent('title', { to: '$& (baz)' });
+  root.cursor = 0;
+  assert.equal(root.find('title'), 'foo (foo)', 'content remains as intended');
 });
 
 test('causes parent tag(s) to sync and update their strings', function() {
