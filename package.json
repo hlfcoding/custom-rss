@@ -7,8 +7,9 @@
   "scripts": {
     "start": "NODE_ENV=production node --use_strict app.js",
     "develop": "supervisor --watch . --debug -- --use_strict app.js",
-    "deploy:start": "rm -rf node_modules/* && npm install --production",
-    "deploy:end": "rm -rf node_modules/* && npm install",
+    "deploy:pre": "rm -rf node_modules/* && npm install --production",
+    "deploy:post": "npm install && to_server",
+    "deploy": "npm run deploy:pre && git push && npm run deploy:post",
     "test": "node --use_strict tests/*-tests.js"
   },
   "keywords": [],
