@@ -48,7 +48,7 @@ module.exports = function createXMLTransformer(delegate) {
 
     find: function(tagName, attrName) {
       var regExp = lazyCreateTagRegExp(tagName);
-      var string = this.string.substring(this.cursor);
+      var string = this.scope();
       var matchResults = string.match(regExp);
 
       if (attrName) {
@@ -138,8 +138,7 @@ module.exports = function createXMLTransformer(delegate) {
 
     replaceFromCursor: function(pattern, replacement) {
       var rest = this.string.substring(0, this.cursor);
-      var replaced = this.string.substring(this.cursor)
-        .replace(pattern, replacement);
+      var replaced = this.scope().replace(pattern, replacement);
 
       var oldString = this.string;
       this.string = rest + replaced;
@@ -157,6 +156,10 @@ module.exports = function createXMLTransformer(delegate) {
       );
 
       c.originalString = c.string;
+    },
+
+    scope: function() {
+      return this.string.substring(this.cursor);
     }
   };
 };
