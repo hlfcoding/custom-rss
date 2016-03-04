@@ -7,13 +7,13 @@ function lazyCreateAttrRegExp(tagName, attrName) {
   if (!rTags[attrName]) {
     var pattern = (
       // Start of tag, allows whitespace or breaks.
-      '<'+ tagName +'[^]*?'+ attrName +'="' +
+      '\s*<'+ tagName +'[^]*?'+ attrName +'="' +
       // Content, lazy, allows whitespace and breaks.
       '([^]+?)' +
       // End of tag, allows whitespace or breaks.
-      '"[^]*?>'
+      '"[^]*?>\s*'
     );
-    rAttrs[attrName] = new RegExp(pattern, 'i');
+    rAttrs[attrName] = new RegExp(pattern, 'i', 'm');
   }
   return rAttrs[attrName];
 }
