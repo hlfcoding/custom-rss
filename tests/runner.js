@@ -8,6 +8,8 @@ var colors = {
 };
 
 module.exports = {
+  exitEarly: false,
+
   afterEach: function(block) {
     afterEach = block;
   },
@@ -20,17 +22,22 @@ module.exports = {
     try {
       if (beforeEach) { beforeEach(); }
       block();
-      console.log(colors.pass, 'PASS', description, colors.none);
+      console.log(colors.pass, 'PASS', description);
 
     } catch (error) {
       console.error(colors.fail, 'FAIL', description);
       if ('actual' in error && 'expected' in error) {
-        console.log('     ACTUALLY', error.actual,
+        console.log('      ACTUALLY', error.actual,
           'EXPECTED', error.expected, colors.none);
       } else {
-        console.log('\n', error.stack, '\n', colors.none);
+        console.log('\n', error.stack, '\n');
       }
-      failed += 1;
+      if (this.exitEarly && failed > 0) {
+        console.log(colors.fail, 'STOPPING early from failures!\n');
+        process.exit(1);
+      } else {
+        failed += 1;
+      }
 
     } finally {
       total += 1;
@@ -39,18 +46,14 @@ module.exports = {
   },
 
   report: function() {
-    var passed = total - failed;
-    console.log(colors.pass, '\nPASSED', passed,
-      colors.fail, 'FAILED', failed, colors.none);
-    if (failed > 0) {
-      console.log(colors.fail, 'STOPPING early from failures!\n', colors.none);
-      process.exit(1);
-    } else {
-      console.log('');
-    }
+    console.log(
+      colors.pass, '\nPASSED', total - failed,
+      colors.fail, 'FAILED', failed,
+      colors.none, 'TOTAL', total, '\n'
+    );
   },
 
   subject: function(description) {
-    console.log('\n', description, '\n');
+    console.log(colors.none, '\n', description, '\n');
   }
 };
