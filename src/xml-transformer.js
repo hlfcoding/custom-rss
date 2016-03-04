@@ -35,6 +35,8 @@ function lazyCreateTagRegExp(tagName) {
 
 module.exports = function createXMLTransformer(string) {
   return {
+    creator: createXMLTransformer,
+
     content: function(raw) {
       var string = this.matchResults[1];
       if (rHasTag.test(string) && !raw) {
