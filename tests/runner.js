@@ -51,6 +51,6 @@ module.exports = {
   },
 
   subject: function(description) {
-    console.log(description, '\n');
+    console.log('\n', description, '\n');
   }
 };
