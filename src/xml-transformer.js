@@ -76,7 +76,12 @@ module.exports = function createXMLTransformer(string) {
     },
 
     skip: function() {
-      this.replaceChildString('');
+      this.cursor = this.matchResults.index;
+      this.replaceFromCursor(this.matchingTag(), '');
+
+      if (this.parent) {
+        this.parent.replaceChildString();
+      }
     },
 
     transformContent: function(tagName, args) {
