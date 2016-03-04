@@ -2,9 +2,21 @@ var log = require('util').log;
 var mode = process.env.NODE_ENV || 'development';
 function noop() {}
 
-function debugLog(label, string) {
-  string = label.toUpperCase() +': '+ string;
+function debugLog(label) {
+  function toString(value) {
+    if (typeof value === 'function') {
+      return '[function]';
+    }
+    return value.toString ? value.toString() : value;
+  }
 
+  var string;
+  if (arguments.length > 2) {
+    string = Array.prototype.slice.call(arguments, 1).map(toString).join(', ');
+  } else {
+    string = toString(arguments[1]);
+  }
+  string = label.toUpperCase() +': '+ string;
   if (string.indexOf('\n') !== -1) {
     string = '\n\n'+ string;
   }
