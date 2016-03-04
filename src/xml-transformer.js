@@ -86,6 +86,7 @@ module.exports = function createXMLTransformer(string) {
       }
       args.from = args.from || string;
 
+      this.cursor = this.matchResults.index;
       this.replaceFromCursor(args.from, args.to);
 
       if (this.parent) {
