@@ -12,7 +12,7 @@ function debugLog(label) {
 
   var string;
   if (arguments.length > 2) {
-    string = Array.prototype.slice.call(arguments, 1).map(toString).join(', ');
+    string = Array.prototype.slice.call(arguments, 1).map(toString).join('  ');
   } else {
     string = toString(arguments[1]);
   }
@@ -35,5 +35,5 @@ module.exports = {
   log: (mode !== 'development') ? noop : debugLog,
   mode: mode,
   patterns: patterns,
-  track: log
+  track: debugLog
 };
