@@ -43,5 +43,9 @@ node_modules/**/*file
 .node_repl_history
 
 # Additions
+*.shtml
 *.sublime-workspace
+.htaccess
+robots.txt
 tmp/*
+
