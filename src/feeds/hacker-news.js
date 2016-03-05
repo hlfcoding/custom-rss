@@ -39,6 +39,9 @@ module.exports = function(config, request, response) {
       data = filterFeed({
         config: config,
         data: data,
+        findLink: function (entry) {
+          return entry.find('link', 'href');
+        },
         shouldSkipEntry: shouldSkipEntry,
         transformMeta: transformMeta,
         transformEntry: transformTitle,

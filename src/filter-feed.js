@@ -24,13 +24,13 @@ module.exports = function filterFeed(delegate) {
   while ((entry = root.find('entry'))) {
     if (delegate.shouldSkipEntry(filters, entry)) {
       root.skip();
-      skipped.push(entry.find('link'));
+      skipped.push(delegate.findLink(entry));
     } else {
       delegate.transformEntry(entry);
       root.next();
     }
   }
-  track('Skipped '+ skipped.length +' for '+ delegate.config.name +'\n'+
+  track('skipped', skipped.length, 'for', delegate.config.name, '\n',
     skipped.join('\n'));
 
   return root.string;

@@ -74,6 +74,14 @@ test('removes current match from string', function() {
   assert.equal(root.find('title'), 'bar', 'now starts with second entry');
 });
 
+test('skips successive posts reliably', function() {
+  root.find('entry');
+  root.skip();
+  root.find('entry');
+  root.skip();
+  assert.equal(root.find('title'), 'baz', 'now starts with third entry');
+});
+
 
 runner.subject('#transformContent');
 
