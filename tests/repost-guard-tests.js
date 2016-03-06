@@ -15,12 +15,15 @@ var guard;
 runner.beforeEach(function() {
   guard = createRepostGuard({
     directory: path.join(__dirname, 'tmp'),
+    feedPageSize: 2,
+    lineLimit: 4,
     sync: true
   });
 
   guard.setUpWithData = function() {
     this.setUp();
-    this.data = fixture;
+    this.setData(fixture);
+    this.dataChanged = true;
   };
 
   guard.addStoreData = function() {
@@ -31,6 +34,44 @@ runner.beforeEach(function() {
 
 runner.afterEach(function() {
   guard.removeStoreFile();
+});
+
+
+runner.subject('#checkLink');
+
+test('adds normalized link to data if unique', function() {
+  guard.addStoreData();
+  guard.setUp();
+  assert(guard.checkLink('http://twitter.com/me?q=1#id'), 'unique');
+  assert(guard.checkLink('http://twitter.com/me?q=1#id'), 'still in page');
+  assert.equal(
+    guard.data.indexOf('twitter.com/me\n'),
+    guard.data.lastIndexOf('twitter.com/me\n'),
+    'appends link only once'
+  );
+});
+
+test("any existing link outside of 'current page' is a repost", function() {
+  guard.addStoreData();
+  guard.setUp();
+  assert(guard.checkLink('http://twitter.com/me?q=1#id'), 'unique');
+  assert(guard.checkLink('http://twitter.com/me?q=1#id'), 'still in page');
+  assert(guard.checkLink('http://vine.co/playlists/foo'), 'unique');
+  assert(!guard.checkLink('http://twitter.com/me?q=1#id'), 'repost');
+});
+
+test('removes lines from top when line-limit reached ', function() {
+  guard.addStoreData();
+  guard.setUp();
+  assert(guard.checkLink('http://twitter.com/hashtag/foo'), 'returns success');
+  assert(guard.checkLink('http://vine.co/playlists/foo'), 'returns success');
+  assert(guard.data.indexOf('facebook.com/some-user/some-post') === -1,
+    'removes first link');
+});
+
+test('works with no stored data', function() {
+  guard.setUp();
+  assert(guard.checkLink('http://twitter.com/me?q=1#id'), 'returns success');
 });
 
 
