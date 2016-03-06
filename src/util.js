@@ -1,3 +1,4 @@
+var fs = require('fs');
 var log = require('util').log;
 var mode = process.env.NODE_ENV || 'development';
 function noop() {}
@@ -31,9 +32,37 @@ var patterns = {
   }
 };
 
+function readFile(delegate) {
+  if (delegate.sync) {
+    try { delegate.onData(fs.readFileSync(delegate.file)); }
+    catch (error) { delegate.onError(error); }
+
+  } else {
+    fs.readFile(delegate.file, function(error, data) {
+      if (error) { delegate.onError(error); }
+      delegate.onData(data);
+    }.bind(this));
+  }
+}
+
+function writeFile(delegate) {
+  if (delegate.sync) {
+    try { delegate.onDone(fs.writeFileSync(delegate.file, delegate.data)); }
+    catch (error) { delegate.onError(error); }
+
+  } else {
+    fs.writeFile(delegate.file, delegate.data, function(error) {
+      if (error) { delegate.onError(error); }
+      delegate.onDone();
+    }.bind(this));
+  }
+}
+
 module.exports = {
   log: (mode !== 'development') ? noop : debugLog,
   mode: mode,
   patterns: patterns,
-  track: debugLog
+  readFile: readFile,
+  track: debugLog,
+  writeFile: writeFile
 };
