@@ -51,6 +51,7 @@ module.exports = {
       colors.fail, 'FAILED', failed,
       colors.none, 'TOTAL', total, '\n'
     );
+    afterEach = beforeEach = null;
   },
 
   subject: function(description) {

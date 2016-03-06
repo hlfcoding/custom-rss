@@ -1,9 +1,8 @@
 var assert = require('assert');
-var runner = require('./runner');
+var runner = require('./lib/runner');
 var test = runner.test.bind(runner);
 
 var createXMLTransformer = require('../src/xml-transformer');
-
 runner.subject('createXMLTransformer');
 
 var root;
