@@ -46,8 +46,9 @@ module.exports = {
   },
 
   report: function() {
+    console.log('\n');
     console.log(
-      colors.pass, '\nPASSED', total - failed,
+      colors.pass, 'PASSED', total - failed,
       colors.fail, 'FAILED', failed,
       colors.none, 'TOTAL', total, '\n'
     );
