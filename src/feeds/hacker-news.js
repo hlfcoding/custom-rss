@@ -9,11 +9,18 @@ function createDomainSuffix(entry) {
   return (!link.length ? '' : ' ('+link.match(patterns.domain)[1]+')');
 }
 
-function shouldSkipEntry(filters, entry) {
+function shouldSkipEntry(entry, filters, repostGuard) {
   var title = entry.find('title');
-  return filters.reduce(function(skip, filter) {
+  var skip = filters.reduce(function(skip, filter) {
     return skip || filter.pattern.test(title);
   }, false);
+
+  var link = entry.find('link', 'href');
+  if (!skip) {
+    skip = !repostGuard.checkLink(link);
+  }
+
+  return skip;
 }
 
 function transformMeta(root) {
@@ -36,7 +43,7 @@ module.exports = function(config, request, response) {
     url: 'http://hnapp.com/rss?q='+ config.hnappQuery,
     onResponse: function(resFetch, data) {
       response.setHeader('Content-Type', resFetch.headers['content-type']);
-      data = filterFeed({
+      filterFeed({
         config: config,
         data: data,
         findLink: function (entry) {
@@ -45,9 +52,11 @@ module.exports = function(config, request, response) {
         shouldSkipEntry: shouldSkipEntry,
         transformMeta: transformMeta,
         transformEntry: transformTitle,
-        verbose: true
+        verbose: true,
+        onDone: function(data) {
+          response.end(data);
+        }
       });
-      response.end(data);
     },
     onError: function(e) {
       response.end(e.message);
