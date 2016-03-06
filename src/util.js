@@ -33,26 +33,28 @@ var patterns = {
 };
 
 function readFile(delegate) {
+  var o = delegate.options || 'utf8';
   if (delegate.sync) {
-    try { delegate.onData(fs.readFileSync(delegate.file)); }
+    try { delegate.onData(fs.readFileSync(delegate.file, o)); }
     catch (error) { delegate.onError(error); }
 
   } else {
-    fs.readFile(delegate.file, function(error, data) {
-      if (error) { delegate.onError(error); }
+    fs.readFile(delegate.file, o, function(error, data) {
+      if (error) { return delegate.onError(error); }
       delegate.onData(data);
     }.bind(this));
   }
 }
 
 function writeFile(delegate) {
+  var o = delegate.options || null;
   if (delegate.sync) {
-    try { delegate.onDone(fs.writeFileSync(delegate.file, delegate.data)); }
+    try { delegate.onDone(fs.writeFileSync(delegate.file, delegate.data, o)); }
     catch (error) { delegate.onError(error); }
 
   } else {
-    fs.writeFile(delegate.file, delegate.data, function(error) {
-      if (error) { delegate.onError(error); }
+    fs.writeFile(delegate.file, delegate.data, o, function(error) {
+      if (error) { return delegate.onError(error); }
       delegate.onDone();
     }.bind(this));
   }

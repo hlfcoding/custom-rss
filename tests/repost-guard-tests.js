@@ -7,10 +7,10 @@ var createRepostGuard = require('../src/repost-guard');
 runner.subject('createRepostGuard');
 
 var fixture = [
-  'http://facebook.com',
-  'http://google.com',
-  'http://yahoo.com'
-].join('\n');
+  'medium.com/some-user/some-post',
+  'google.com/some-page',
+  'yahoo.com/some-page'
+].join('\n') + '\n';
 var guard;
 runner.beforeEach(function() {
   guard = createRepostGuard({
@@ -53,7 +53,7 @@ test('loads data from store file', function() {
 runner.subject('#tearDown');
 
 test('flushes data into store file', function() {
-  var addition = '\nhttp://twitter.com';
+  var addition = 'twitter.com/hashtag/foo\n';
   guard.setUpWithData();
   guard.data += addition;
   guard.tearDown();
