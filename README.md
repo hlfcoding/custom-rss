@@ -9,7 +9,8 @@
 
 - [x] Blacklist filtering
 - [x] Repost guarding
+- [x] Skipped entry logging
 - [x] Uses JSON for configuration
 - [x] Feeds as middleware functions
 - [x] As few dependencies as possible
-- [x] ES5, so compatible with older node versions
+- [x] ES5, so compatible with older Node versions
