@@ -1,6 +1,6 @@
 {
   "name": "custom-rss",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Filtering RSS because Zapier is too expensive.",
   "main": "src/feeds/index.js",
   "keywords": ["feed filter", "rss", "atom", "xml", "hn"],
