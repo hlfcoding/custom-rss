@@ -7,11 +7,12 @@ var test = runner.test.bind(runner);
 var createRepostGuard = require('../src/repost-guard');
 runner.subject('createRepostGuard');
 
-var fixture = [
+var fixtureLines = [
   'medium.com/some-user/some-post',
   'google.com/some-page',
   'yahoo.com/some-page'
-].join('\n') + '\n';
+];
+var fixtureData = fixtureLines.join('\n') + '\n';
 var guard;
 runner.beforeEach(function() {
   guard = createRepostGuard({
@@ -23,13 +24,9 @@ runner.beforeEach(function() {
 
   guard.setUpWithData = function() {
     this.setUp();
-    this.setData(fixture);
+    this.setData(fixtureData);
     this.dataChanged = true;
-  };
-
-  guard.addStoreData = function() {
-    guard.setUpWithData();
-    guard.tearDown();
+    return this;
   };
 });
 
@@ -41,8 +38,7 @@ runner.afterEach(function() {
 runner.subject('#checkLink');
 
 test('adds normalized link to data if unique', function() {
-  guard.addStoreData();
-  guard.setUp();
+  guard.setUpWithData();
   assert(guard.checkLink('http://twitter.com/me?q=1#id'), 'unique');
   assert(guard.checkLink('http://twitter.com/me?q=1#id'), 'still in page');
   assert.equal(
@@ -53,8 +49,7 @@ test('adds normalized link to data if unique', function() {
 });
 
 test("any existing link outside of 'current page' is a repost", function() {
-  guard.addStoreData();
-  guard.setUp();
+  guard.setUpWithData();
   assert(guard.checkLink('http://twitter.com/me?q=1#id'), 'unique');
   assert(guard.checkLink('http://twitter.com/me?q=1#id'), 'still in page');
   assert(guard.checkLink('http://vine.co/playlists/foo'), 'unique');
@@ -62,15 +57,13 @@ test("any existing link outside of 'current page' is a repost", function() {
 });
 
 test('removes lines from top when line-limit reached ', function() {
-  guard.addStoreData();
-  guard.setUp();
+  guard.setUpWithData();
   assert(guard.checkLink('http://twitter.com/hashtag/foo'), 'returns success');
   assert(guard.checkLink('http://vine.co/playlists/foo'), 'returns success');
-  assert(guard.data.indexOf('facebook.com/some-user/some-post') === -1,
-    'removes first link');
+  assert.equal(guard.data.indexOf(fixtureLines[0]), -1, 'removes first link');
 });
 
-test('works with no stored data', function() {
+test('works with no initial data', function() {
   guard.setUp();
   assert(guard.checkLink('http://twitter.com/me?q=1#id'), 'returns success');
 });
@@ -79,16 +72,14 @@ test('works with no stored data', function() {
 runner.subject('#setUp');
 
 test('creates store file if none exist', function() {
-  assert.doesNotThrow(function() {
-    guard.setUp();
-  });
+  assert.doesNotThrow(function() { guard.setUp(); });
   assert.equal(guard.data, '', 'sets data to blank');
 });
 
 test('loads data from store file', function() {
-  guard.addStoreData();
+  guard.setUpWithData().tearDown();
   guard.setUp();
-  assert.equal(guard.data, fixture, 'loads fixture data');
+  assert.equal(guard.data, fixtureData, 'loads fixture data');
 });
 
 
@@ -97,12 +88,12 @@ runner.subject('#tearDown');
 test('flushes data into store file', function() {
   var addition = 'twitter.com/hashtag/foo\n';
   guard.setUpWithData();
-  guard.data += addition;
+  guard.setData(guard.data + addition);
   guard.tearDown();
   assert.equal(guard.data, null, 'sets data to null');
 
   guard.setUp();
-  assert.equal(guard.data, fixture + addition, 'loads fixture data');
+  assert.equal(guard.data, fixtureData + addition, 'file has data');
 });
 
 

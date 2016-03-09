@@ -1,2 +1,2 @@
-require('./repost-guard-tests.js');
-require('./xml-transformer-tests.js');
+require('./repost-guard-tests');
+require('./xml-transformer-tests');
