@@ -1,17 +1,12 @@
-var fs = require('fs');
 var path = require('path');
-var url = require('url');
 var util = require('./util');
-
-var rLine = /\n/g;
 
 module.exports = function createRepostGuard(delegate) {
   return {
     checkLink: function(link) {
-      if (this.data === null) {
-        throw 'no links data loaded';
-      }
-      link = this.normalizedLink(link);
+      if (this.data === null) { throw 'no links data loaded'; }
+
+      link = util.normalizeLink(link);
       var isRepost = this.dataToCheck.indexOf(link) !== -1;
       if (!isRepost && this.data.indexOf(link) === -1) {
         this.appendLink(link);
@@ -28,28 +23,20 @@ module.exports = function createRepostGuard(delegate) {
           if (!delegate.sync) {
             delegate.onReady();
           }
-        }.bind(this),
-        onError: this.handleReadError.bind(this)
+        }.bind(this)
       });
     },
 
     tearDown: function() {
-      var reset = function() {
-          this.data = this.dataToCheck = null;
-          this.dataChanged = false;
-          this.lines = 0;
-      }.bind(this);
-
       if (!this.dataChanged) {
-        reset();
+        this.resetData();
         return false;
       }
       util.writeFile({
         data: this.data,
         file: this.storeFile(),
         sync: delegate.sync,
-        onDone: reset,
-        onError: this.handleReadError.bind(this)
+        onDone: this.resetData.bind(this)
       });
     },
 
@@ -65,15 +52,11 @@ module.exports = function createRepostGuard(delegate) {
         this.dataChanged = true;
       }
       var data = this.data + (link +'\n');
+      var firstLineEnd = data.indexOf('\n');
       if (this.lines === delegate.lineLimit) {
-        data = data.substring(data.indexOf('\n'));
+        data = data.substring(firstLineEnd);
       }
       this.setData(data);
-    },
-
-    createStoreFile: function() {
-      fs.openSync(this.storeFile(), 'a');
-      this.setData('');
     },
 
     currentPageIndex: function() {
@@ -89,31 +72,16 @@ module.exports = function createRepostGuard(delegate) {
       return index;
     },
 
-    handleReadError: function(error) {
-      if (error.code === 'ENOENT') {
-        this.createStoreFile();
-      } else {
-        throw error;
-      }
-    },
-
-    handleWriteError: function(error) {
-      throw error;
-    },
-
-    normalizedLink: function(link) {
-      var parsed = url.parse(link);
-      return parsed.host + parsed.pathname;
-    },
-
-    removeStoreFile: function() {
-      fs.unlinkSync(this.storeFile());
+    resetData: function() {
+      this.data = this.dataToCheck = null;
+      this.dataChanged = false;
+      this.lines = 0;
     },
 
     setData: function(data) {
       this.data = data;
       this.dataToCheck = data.substring(0, this.currentPageIndex());
-      var matchResults = data.match(rLine);
+      var matchResults = data.match(util.patterns.line);
       this.lines = matchResults ? matchResults.length : 0;
     },
 

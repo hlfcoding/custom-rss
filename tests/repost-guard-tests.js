@@ -1,4 +1,5 @@
 var assert = require('assert');
+var fs = require('fs');
 var path = require('path');
 var runner = require('./lib/runner');
 var test = runner.test.bind(runner);
@@ -33,7 +34,7 @@ runner.beforeEach(function() {
 });
 
 runner.afterEach(function() {
-  guard.removeStoreFile();
+  fs.unlinkSync(guard.storeFile());
 });
 
 

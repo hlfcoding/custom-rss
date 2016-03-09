@@ -1,5 +1,7 @@
 var fs = require('fs');
 var log = require('util').log;
+var url = require('url');
+
 var mode = process.env.NODE_ENV || 'development';
 module.exports.mode = mode;
 
@@ -27,15 +29,32 @@ function debugLog(label) {
 module.exports.log = (mode !== 'development') ? function() {} : debugLog;
 module.exports.track = debugLog;
 
+module.exports.normalizeLink = function(link) {
+  var parsed = url.parse(link);
+  return parsed.host + parsed.pathname;
+};
+
 module.exports.patterns = {
   domain: /:\/\/(?:www\.)?([^\/]+)/,
+  line: /\n/g,
   createFromTokens: function(escapedTokens) {
     return new RegExp('\\b('+ escapedTokens.join('|') +')\\b');
   }
 };
 
+function handleFileError(delegate, retry, error) {
+  if (error.code === 'ENOENT') {
+    fs.openSync(delegate.file, 'a');
+    retry(delegate);
+  } else {
+    throw error;
+  }
+}
+
 function readFile(delegate) {
+  delegate.onError = delegate.onError || handleFileError.bind(null, delegate, readFile);
   var o = delegate.options || 'utf8';
+
   if (delegate.sync) {
     try { delegate.onData(fs.readFileSync(delegate.file, o)); }
     catch (error) { delegate.onError(error); }
@@ -44,11 +63,13 @@ function readFile(delegate) {
     fs.readFile(delegate.file, o, function(error, data) {
       if (error) { return delegate.onError(error); }
       delegate.onData(data);
-    }.bind(this));
+    });
   }
 }
 function writeFile(delegate) {
+  delegate.onError = delegate.onError || handleFileError.bind(null, delegate, writeFile);
   var o = delegate.options || null;
+
   if (delegate.sync) {
     try { delegate.onDone(fs.writeFileSync(delegate.file, delegate.data, o)); }
     catch (error) { delegate.onError(error); }
@@ -57,7 +78,7 @@ function writeFile(delegate) {
     fs.writeFile(delegate.file, delegate.data, o, function(error) {
       if (error) { return delegate.onError(error); }
       delegate.onDone();
-    }.bind(this));
+    });
   }
 }
 module.exports.readFile = readFile;
