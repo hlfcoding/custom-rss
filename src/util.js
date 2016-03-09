@@ -1,7 +1,7 @@
 var fs = require('fs');
 var log = require('util').log;
 var mode = process.env.NODE_ENV || 'development';
-function noop() {}
+module.exports.mode = mode;
 
 function debugLog(label) {
   function toString(value) {
@@ -24,8 +24,10 @@ function debugLog(label) {
 
   log(string +'\n');
 }
+module.exports.log = (mode !== 'development') ? function() {} : debugLog;
+module.exports.track = debugLog;
 
-var patterns = {
+module.exports.patterns = {
   domain: /:\/\/(?:www\.)?([^\/]+)/,
   createFromTokens: function(escapedTokens) {
     return new RegExp('\\b('+ escapedTokens.join('|') +')\\b');
@@ -45,7 +47,6 @@ function readFile(delegate) {
     }.bind(this));
   }
 }
-
 function writeFile(delegate) {
   var o = delegate.options || null;
   if (delegate.sync) {
@@ -59,12 +60,6 @@ function writeFile(delegate) {
     }.bind(this));
   }
 }
+module.exports.readFile = readFile;
+module.exports.writeFile = writeFile;
 
-module.exports = {
-  log: (mode !== 'development') ? noop : debugLog,
-  mode: mode,
-  patterns: patterns,
-  readFile: readFile,
-  track: debugLog,
-  writeFile: writeFile
-};
