@@ -11,15 +11,16 @@
           "type": "blacklist",
           "tokens": [
             "#C", "\\.NET", "Angular", "BEM", "DuckDuckGo", "Java", "Kotlin",
-            "Lua", "MatLab", "OCAML", "Perl", "R", "Raspberry Pi", "Rust",
-            "Surface Pro", "Xamarin"
+            "Lua", "MatLab", "OCaml", "Perl", "R", "Raspberry\\s?Pi", "Rust",
+            "Surface Pro", "Xamarin", "Vim", "Emacs", "Bitcoin", "LaTeX",
+            "TypeScript", "C\\+\\+", "TPP"
           ]
         },
         {
           "name": "tired-topics",
           "type": "blacklist",
           "tokens": [
-            "Trump", "Bernie", "Hillary"
+            "Trump", "Bernie", "Hillary", "San Bernardino", "Theranos"
           ]
         }
       ]
