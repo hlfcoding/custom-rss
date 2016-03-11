@@ -30,3 +30,11 @@ The sample app is what's in the root directory. It's a barebones Connect app, wi
 - [ ] Yahoo Tech
 - [ ] Ray Wenderlich
 - [ ] Gama Sutra
+
+---
+
+### Implementation
+
+Some shared hosting providers, including mine, refuse to have NPM installed on their system. So dependencies need to be few to none, unless they're small enough to version. No XML parser or writer is used; a much lighter hand-rolled transformer does basic regex parsing. No MySQL client is used; data is stored with limits in plain files and manipulated in buffers (memory). No logger or mailer is used for feedback; custom loggers are handrolled as needed, with utilities on top of `fs`. The test-runner is handrolled (only because not a lot is required). Connect is the only dependency (but not really, see usage). This core constraint also yields the opportunity to learn Node fundamentals.
+
+![custom-rss](https://cloud.githubusercontent.com/assets/100884/13690283/08d7c958-e6e4-11e5-9a83-dacfb7dc7d2f.png)
