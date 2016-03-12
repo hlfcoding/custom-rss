@@ -14,7 +14,27 @@ module.exports = function createRepostGuard(delegate) {
       return !isRepost;
     },
 
+    persistLinks: function(callback) {
+      if (!this.dataChanged || this.isPersisting) {
+        if (callback) { callback(); }
+        return false;
+      }
+      this.isPersisting = true;
+      util.writeFile({
+        data: this.data,
+        file: this.storeFile(),
+        sync: delegate.sync,
+        onDone: function() {
+          this.isPersisting = false;
+          if (callback) { callback(); }
+        }.bind(this)
+      });
+    },
+
     setUp: function() {
+      if (this.data) {
+        throw 'existing data will be overwritten by read file';
+      }
       util.readFile({
         file: this.storeFile(),
         sync: delegate.sync,
@@ -28,16 +48,7 @@ module.exports = function createRepostGuard(delegate) {
     },
 
     tearDown: function() {
-      if (!this.dataChanged) {
-        this.resetData();
-        return false;
-      }
-      util.writeFile({
-        data: this.data,
-        file: this.storeFile(),
-        sync: delegate.sync,
-        onDone: this.resetData.bind(this)
-      });
+      return this.persistLinks(this.resetData.bind(this));
     },
 
     // Internal:
@@ -45,6 +56,7 @@ module.exports = function createRepostGuard(delegate) {
     data: null,
     dataToCheck: null,
     dataChanged: false,
+    isPersisting: false,
     lines: 0,
 
     appendLink: function(link) {

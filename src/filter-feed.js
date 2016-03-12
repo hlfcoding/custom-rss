@@ -21,10 +21,11 @@ function filterFeed(delegate) {
   var root = createXMLTransformer({ string: delegate.data, verbose: delegate.verbose });
   delegate.transformMeta(root);
 
+  var guard = createRepostGuard.shared;
   var entry, skip;
   while ((entry = root.find('entry'))) {
 
-    if ((skip = delegate.shouldSkipEntry(entry, filters, delegate.guard)) &&
+    if ((skip = delegate.shouldSkipEntry(entry, filters, guard)) &&
         skip !== false)
     {
       root.skip();
@@ -43,33 +44,25 @@ function filterFeed(delegate) {
 }
 
 module.exports = function(delegate) {
-  // Wait for guard, logger.
-  var deferredFilterFeed = util.callOn(2, filterFeed.bind(null, delegate));
-  delegate.guard = createRepostGuard({
-    directory: directory,
-    lineLimit: 5000, // ~350 links * 14 days
-    // Number of most recent links discounted for being on current page.
-    feedPageSize: 30,
-    sync: false,
-    onReady: deferredFilterFeed
-  });
+  // Wait for logger.
   delegate.logger = createEntryLogger({
     directory: directory,
     feedName: delegate.config.name,
     lineLimit: 500,
     sync: false,
-    onReady: deferredFilterFeed
+    onReady: filterFeed.bind(null, delegate)
   });
 
   // Wait for feed.
   var onDone = delegate.onDone;
   delegate.onDone = function() {
     onDone.apply(delegate, arguments);
-    delegate.guard.tearDown();
+    createRepostGuard.shared.persistLinks(function() {
+      util.log('Links persisted.');
+    });
     delegate.logger.tearDown();
   };
 
   // Start.
-  delegate.guard.setUp();
   delegate.logger.setUp();
 };
