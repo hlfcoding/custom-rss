@@ -15,23 +15,55 @@ function createFilters(configs) {
   });
 }
 
+var defaultFinders = {
+  entry: function(root) { return root.find('entry'); },
+  link: function(entry) { return entry.find('link'); },
+  title: function(entry) { return entry.find('title'); }
+};
+
+function defaultShouldSkipEntry(entry, finders, filters, repostGuard) {
+  var title = finders.title(entry);
+  var skip = filters.reduce(function(skip, filter) {
+    return skip || filter.pattern.test(title);
+  }, false);
+  if (skip) { skip = 'blocked'; }
+
+  var link = finders.link(entry);
+  if (skip === false) {
+    skip = !repostGuard.checkLink(link);
+    if (skip) { skip = 'repost'; }
+  }
+
+  return skip;
+}
+
 function filterFeed(delegate) {
   var filters = createFilters(delegate.config.filters);
 
-  var root = createXMLTransformer({ string: delegate.data, verbose: delegate.verbose });
+  var root = createXMLTransformer({
+    string: delegate.data, verbose: delegate.verbose
+  });
   delegate.transformMeta(root);
 
+  var finders = {
+    entry: delegate.findEntry || defaultFinders.entry,
+    id: delegate.findId,
+    link: delegate.findLink || defaultFinders.link,
+    title: delegate.findTitle || defaultFinders.title
+  };
   var guard = createRepostGuard.shared;
-  var entry, skip;
-  while ((entry = root.find('entry'))) {
+  var shouldSkipEntry = delegate.shouldSkipEntry || defaultShouldSkipEntry;
 
-    if ((skip = delegate.shouldSkipEntry(entry, filters, guard)) &&
+  var entry, skip;
+  while ((entry = finders.entry(root))) {
+
+    if ((skip = shouldSkipEntry(entry, finders, filters, guard)) &&
         skip !== false)
     {
       root.skip();
       delegate.logger.logEntry({
-        id: delegate.findId(entry),
-        title: delegate.findTitle(entry) +' ('+ skip +')'
+        id: finders.id(entry),
+        title: finders.title(entry) +' ('+ skip +')'
       });
 
     } else {
