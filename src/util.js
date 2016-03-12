@@ -14,12 +14,17 @@ function debugLog(label) {
   }
 
   var string;
-  if (arguments.length > 2) {
-    string = Array.prototype.slice.call(arguments, 1).map(toString).join('  ');
+  if (arguments.length > 1) {
+    if (arguments.length > 2) {
+      string = Array.prototype.slice.call(arguments, 1).map(toString).join('  ');
+    } else {
+      string = toString(arguments[1]);
+    }
+    string = label.toUpperCase() +': '+ string;
   } else {
-    string = toString(arguments[1]);
+    string = 'LOG: '+ arguments[0];    
   }
-  string = label.toUpperCase() +': '+ string;
+
   if (string.indexOf('\n') !== -1) {
     string = '\n\n'+ string;
   }
