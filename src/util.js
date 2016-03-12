@@ -33,6 +33,18 @@ function debugLog(label) {
 }
 module.exports.log = (mode !== 'development') ? function() {} : debugLog;
 
+module.exports.request = function() {
+  var module, protocol;
+  if (typeof arguments[0] === 'string') {
+    protocol = url.parse(arguments[0]).protocol;
+  } else {
+    protocol = arguments[0].protocol;
+  }
+  // http/s (`Error: Protocol "https:" not supported. Expected "http:".`)
+  module = require(protocol.replace(':', ''));
+  return module.request.apply(null, arguments);
+};
+
 module.exports.normalizeLink = function(link) {
   var parsed = url.parse(link);
   return parsed.host + parsed.pathname;

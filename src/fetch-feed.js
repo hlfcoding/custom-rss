@@ -1,24 +1,23 @@
-var http = require('http');
-var log = require('./util').log;
+var util = require('./util');
 
 module.exports = function fetchFeed(delegate) {
-  var request = http.request(delegate.url);
+  var request = util.request(delegate.url);
 
   request.on('error', function(e) {
-    log(e.message);
+    util.log(e.message);
     delegate.onError(e);
   });
 
   request.on('response', function(response) {
-    log('status', response.statusCode);
-    log('headers', JSON.stringify(response.headers));
+    util.log('status', response.statusCode);
+    util.log('headers', JSON.stringify(response.headers));
 
     var data = '';
     response.setEncoding('utf8');
     response.on('data', function(chunk) {
       data += chunk; 
     }).on('end', function() {
-      if (delegate.verbose) { log('data', data); }
+      if (delegate.verbose) { util.log('data', data); }
       delegate.onResponse(response, data);
     });
   });
