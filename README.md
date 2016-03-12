@@ -25,7 +25,7 @@ The sample app is what's in the root directory. It's a barebones Connect app, wi
 ### Feeds
 
 - [x] Hacker News (via [hnapp](http://hnapp.com))
-- [ ] Quartz
+- [x] Quartz
 - [ ] NYTimes Business
 - [ ] Yahoo Tech
 - [ ] Ray Wenderlich

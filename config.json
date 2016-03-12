@@ -24,6 +24,27 @@
           ]
         }
       ]
+    },
+    {
+      "name": "quartz",
+
+      "filters": [
+        {
+          "name": "uninteresting-topics",
+          "type": "blacklist",
+          "tokens": [
+            "Jenner", "Indian?s?", "Modi", "Quartz Daily Brief", "Mallya", "Jaitley"
+          ]
+        },
+        {
+          "name": "tired-topics",
+          "type": "blacklist",
+          "tokens": [
+            "Trump", "Bernie", "Hillary", "San Bernardino", "Brexit", 
+            "Sharapova", "hoverboard"
+          ]
+        }
+      ]
     }
   ]
 }
