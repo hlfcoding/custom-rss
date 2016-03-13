@@ -9,7 +9,7 @@ createRepostGuard.shared = createRepostGuard({
   directory: path.join(__dirname, 'tmp'),
   lineLimit: 5000, // ~350 links * 14 days
   // Number of most recent links discounted for being on current page.
-  feedPageSize: 90, // ~30 items * 3 feeds
+  feedPageSize: 30,
   sync: false,
   onReady: function() { log('Links loaded.'); }
 });

@@ -57,7 +57,8 @@ function filterFeed(delegate) {
   var entry, skip;
   while ((entry = finders.entry(root))) {
 
-    if ((skip = shouldSkipEntry(entry, finders, filters, guard)) &&
+    if (delegate.guardReposts !== false &&
+        (skip = shouldSkipEntry(entry, finders, filters, guard)) &&
         skip !== false)
     {
       root.skip();
