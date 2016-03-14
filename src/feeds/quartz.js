@@ -17,7 +17,6 @@ module.exports = function(config, request, response) {
         findEntry: function(root) { return root.find('item'); },
         findId: function(entry) { return entry.find('guid'); },
         guardReposts: false,
-        transformEntry: function() {},
         transformMeta: transformMeta,
         verbose: true,
         onDone: function(data) {

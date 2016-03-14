@@ -43,7 +43,9 @@ function filterFeed(delegate) {
   var root = createXMLTransformer({
     string: delegate.data, verbose: delegate.verbose
   });
-  delegate.transformMeta(root);
+  if (delegate.transformMeta) {
+    delegate.transformMeta(root);
+  }
 
   var finders = {
     entry: delegate.findEntry || defaultFinders.entry,
@@ -70,7 +72,9 @@ function filterFeed(delegate) {
       });
 
     } else {
-      delegate.transformEntry(entry);
+      if (delegate.transformEntry) {
+        delegate.transformEntry(entry);
+      }
       root.next();
     }
 
