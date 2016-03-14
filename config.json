@@ -33,14 +33,14 @@
           "name": "uninteresting-topics",
           "type": "blacklist",
           "tokens": [
-            "Tech Tip:"
+            "Tech Tip:", "The Week Ahead:", "Farhad and Mike"
           ]
         },
         {
           "name": "tired-topics",
           "type": "blacklist",
           "tokens": [
-            "Trump", "Bernie", "Hillary"
+            "Trump", "Bernie", "Hillary", "Cosby"
           ]
         }
       ]
