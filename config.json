@@ -26,6 +26,26 @@
       ]
     },
     {
+      "name": "nyt-business",
+
+      "filters": [
+        {
+          "name": "uninteresting-topics",
+          "type": "blacklist",
+          "tokens": [
+            "Tech Tip:"
+          ]
+        },
+        {
+          "name": "tired-topics",
+          "type": "blacklist",
+          "tokens": [
+            "Trump", "Bernie", "Hillary"
+          ]
+        }
+      ]
+    },
+    {
       "name": "quartz",
 
       "filters": [
