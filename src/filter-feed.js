@@ -83,6 +83,9 @@ function filterFeed(delegate) {
 }
 
 module.exports = function(delegate) {
+  // Remove any XML stylesheets; we won't be serving them.
+  delegate.data = delegate.data.replace(/<\?xml-stylesheet[^]+?\?>\s*/g, '');
+
   // Wait for logger.
   delegate.logger = createEntryLogger({
     directory: directory,

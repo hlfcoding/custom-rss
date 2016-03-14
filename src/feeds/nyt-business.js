@@ -16,8 +16,6 @@ module.exports = function(config, request, response) {
     url: 'http://rss.nytimes.com/services/xml/rss/nyt/Business.xml',
     onResponse: function(resFetch, data) {
       response.setHeader('Content-Type', resFetch.headers['content-type']);
-      // Only feed with XML stylesheets. Abstract if needed.
-      data = data.replace(/<\?xml-stylesheet.+?\?>\s*/, '');
       filterFeed({
         config: config,
         data: data,
