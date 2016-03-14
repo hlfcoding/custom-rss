@@ -29,7 +29,7 @@ function defaultShouldSkipEntry(entry, finders, filters, repostGuard) {
   if (skip) { skip = 'blocked'; }
 
   var link = finders.link(entry);
-  if (skip === false) {
+  if (repostGuard && skip === false) {
     skip = !repostGuard.checkLink(link);
     if (skip) { skip = 'repost'; }
   }
@@ -51,14 +51,16 @@ function filterFeed(delegate) {
     link: delegate.findLink || defaultFinders.link,
     title: delegate.findTitle || defaultFinders.title
   };
-  var guard = createRepostGuard.shared;
+  var guard; 
+  if (delegate.guardReposts !== false) {
+    guard = createRepostGuard.shared;
+  }
   var shouldSkipEntry = delegate.shouldSkipEntry || defaultShouldSkipEntry;
 
   var entry, skip;
   while ((entry = finders.entry(root))) {
 
-    if (delegate.guardReposts !== false &&
-        (skip = shouldSkipEntry(entry, finders, filters, guard)) &&
+    if ((skip = shouldSkipEntry(entry, finders, filters, guard)) &&
         skip !== false)
     {
       root.skip();
