@@ -54,7 +54,9 @@ module.exports.patterns = {
   domain: /:\/\/(?:www\.)?([^\/]+)/,
   line: /\n/g,
   createFromTokens: function(escapedTokens) {
-    return new RegExp('\\b('+ escapedTokens.join('|') +')\\b');
+    return new RegExp('\\b(' +
+      escapedTokens.join('|').replace(/\s/g, '\\s') +
+    ')\\b');
   }
 };
 
