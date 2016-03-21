@@ -37,7 +37,7 @@ function defaultShouldSkipEntry(entry, finders, filters, repostGuard) {
   return skip;
 }
 
-function filterFeed(delegate) {
+function main(delegate) {
   var filters = createFilters(delegate.config.filters);
 
   var root = createXMLTransformer({
@@ -82,7 +82,7 @@ function filterFeed(delegate) {
   delegate.onDone(root.string);
 }
 
-module.exports = function(delegate) {
+function filterFeed(delegate) {
   // Remove any XML stylesheets; we won't be serving them.
   delegate.data = delegate.data.replace(/<\?xml-stylesheet[^]+?\?>\s*/g, '');
 
@@ -96,7 +96,7 @@ module.exports = function(delegate) {
     feedName: delegate.config.name,
     lineLimit: 500,
     sync: false,
-    onReady: filterFeed.bind(null, delegate)
+    onReady: main.bind(null, delegate)
   });
 
   // Wait for feed.
@@ -111,4 +111,9 @@ module.exports = function(delegate) {
 
   // Start.
   delegate.logger.setUp();
-};
+}
+
+filterFeed.createFilters = createFilters;
+filterFeed.defaultShouldSkipEntry = defaultShouldSkipEntry;
+
+module.exports = filterFeed;
