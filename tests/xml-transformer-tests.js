@@ -9,9 +9,9 @@ var root;
 runner.beforeEach(function() {
   root = createXMLTransformer({ string: [
     '<root>\n',
-    '\t<entry rel-src="/foo.html">\n\t\t<title>foo</title>\n\t</entry>\n',
-    '\t<entry rel-src="/bar.html">\n\t\t<title>bar</title>\n\t</entry>\n',
-    '\t<entry rel-src="/baz.html">\n\t\t<title>baz</title>\n\t</entry>\n',
+    '\t<entry rel-src="/foo.html">\n\t\t<title><![CDATA[foo]]></title>\n\t</entry>\n',
+    '\t<entry rel-src="/bar.html">\n\t\t<title><![CDATA[bar]]></title>\n\t</entry>\n',
+    '\t<entry rel-src="/baz.html">\n\t\t<title><![CDATA[baz]]></title>\n\t</entry>\n',
     '</root>\n',
   ].join('') });
 
@@ -26,7 +26,7 @@ runner.subject('#find');
 
 test('returns first tag content by tag name', function() {
   var title = root.find('title');
-  assert.equal(title , 'foo', 'returns correct tag content');
+  assert.equal(title , '<![CDATA[foo]]>', 'returns correct tag content');
   assert.equal(root.content() , title, '#content returns same content');
 });
 
@@ -55,9 +55,9 @@ test('updates internal cursor to end of current match', function() {
 });
 
 test('fails when end of string is reached', function() {
-  assert.equal(root.find('title'), 'foo');
-  assert.equal(root.findNext('title'), 'bar');
-  assert.equal(root.findNext('title'), 'baz');
+  assert.equal(root.find('title'), '<![CDATA[foo]]>');
+  assert.equal(root.findNext('title'), '<![CDATA[bar]]>');
+  assert.equal(root.findNext('title'), '<![CDATA[baz]]>');
   assert(root.next(), 'moves to end of string');
   var oldCursor = root.cursor;
   assert(!root.next(), 'returns bool for failure');
@@ -70,7 +70,7 @@ runner.subject('#skip');
 test('removes current match from string', function() {
   root.find('entry');
   root.skip();
-  assert.equal(root.find('title'), 'bar', 'now starts with second entry');
+  assert.equal(root.find('title'), '<![CDATA[bar]]>', 'now starts with second entry');
 });
 
 test('skips successive posts reliably', function() {
@@ -78,7 +78,7 @@ test('skips successive posts reliably', function() {
   root.skip();
   root.find('entry');
   root.skip();
-  assert.equal(root.find('title'), 'baz', 'now starts with third entry');
+  assert.equal(root.find('title'), '<![CDATA[baz]]>', 'now starts with third entry');
 });
 
 
@@ -86,18 +86,19 @@ runner.subject('#transformContent');
 
 test("transforms tag content based on 'from' and 'to' patterns", function() {
   root.transformContent('title', { from: /f(oo)/, to: 'b$1' });
-  assert.equal(root.find('title'), 'boo', 'partially replaces content');
+  assert.equal(root.find('title'), '<![CDATA[boo]]>', 'partially replaces content');
 
+  root.transformContent('title', { to: 'boo' });
   root.transformContent('title', { to: '$& boo' });
   assert.equal(root.find('title'), 'boo boo', "defaults 'from' to full content");
 });
 
 test('transforms content of successive tags reliably', function() {
-  root.transformContent('title', { to: '$& (foo)' }).next();
-  root.transformContent('title', { to: '$& (bar)' }).next();
-  root.transformContent('title', { to: '$& (baz)' });
+  root.transformContent('title', { from: /foo/, to: '$& (foo)' }).next();
+  root.transformContent('title', { from: /bar/, to: '$& (bar)' }).next();
+  root.transformContent('title', { from: /baz/, to: '$& (baz)' });
   root.cursor = 0;
-  assert.equal(root.find('title'), 'foo (foo)', 'content remains as intended');
+  assert.equal(root.find('title'), '<![CDATA[foo (foo)]]>', 'content remains as intended');
 });
 
 test('causes parent tag(s) to sync and update their strings', function() {
