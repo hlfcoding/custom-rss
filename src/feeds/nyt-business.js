@@ -1,6 +1,7 @@
 var fetchFeed = require('../fetch-feed');
 var filterFeed = require('../filter-feed');
 var patterns = require('../util').patterns;
+var url = require('url');
 
 function transformLink(entry) {
   // Replace with actual article link, instead of redirect.
@@ -12,10 +13,16 @@ function transformMeta(root) {
 }
 
 module.exports = function(config, request, response) {
+  config.originalURL = 'http://www.nytimes.com/services/xml/rss/nyt/Business.xml';
+  config.url = url.format({
+    protocol: 'http', host: request.headers.host, pathname: config.name
+  });
+
   fetchFeed({
     url: 'http://rss.nytimes.com/services/xml/rss/nyt/Business.xml',
     onResponse: function(resFetch, data) {
       response.setHeader('Content-Type', resFetch.headers['content-type']);
+
       filterFeed({
         config: config,
         data: data,

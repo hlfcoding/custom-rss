@@ -1,6 +1,7 @@
 var fetchFeed = require('../fetch-feed');
 var filterFeed = require('../filter-feed');
 var patterns = require('../util').patterns;
+var url = require('url');
 
 var rScorePrefix = /^\d+\s+\S+\s+/;
 
@@ -25,10 +26,16 @@ function transformTitle(entry) {
 }
 
 module.exports = function(config, request, response) {
+  config.originalURL = 'http://hnapp.com/rss?q='+ config.hnappQuery;
+  config.url = url.format({
+    protocol: 'http', host: request.headers.host, pathname: config.name
+  });
+
   fetchFeed({
-    url: 'http://hnapp.com/rss?q='+ config.hnappQuery,
+    url: config.originalURL,
     onResponse: function(resFetch, data) {
       response.setHeader('Content-Type', resFetch.headers['content-type']);
+
       filterFeed({
         config: config,
         data: data,

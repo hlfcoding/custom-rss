@@ -1,16 +1,23 @@
 var fetchFeed = require('../fetch-feed');
 var filterFeed = require('../filter-feed');
 var patterns = require('../util').patterns;
+var url = require('url');
 
 function transformMeta(root) {
   root.transformContent('title', { to: 'Yahoo Tech (filtered)' });
 }
 
 module.exports = function(config, request, response) {
+  config.originalURL = 'https://www.yahoo.com/tech/rss';
+  config.url = url.format({
+    protocol: 'http', host: request.headers.host, pathname: config.name
+  });
+
   fetchFeed({
-    url: 'https://www.yahoo.com/tech/rss',
+    url: config.originalURL,
     onResponse: function(resFetch, data) {
       response.setHeader('Content-Type', resFetch.headers['content-type']);
+
       filterFeed({
         config: config,
         data: data,

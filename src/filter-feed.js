@@ -86,6 +86,10 @@ module.exports = function(delegate) {
   // Remove any XML stylesheets; we won't be serving them.
   delegate.data = delegate.data.replace(/<\?xml-stylesheet[^]+?\?>\s*/g, '');
 
+  // Update URL values in feed.
+  delegate.data = delegate.data.split(delegate.config.originalURL)
+    .join(delegate.config.url);
+
   // Wait for logger.
   delegate.logger = createEntryLogger({
     directory: directory,
