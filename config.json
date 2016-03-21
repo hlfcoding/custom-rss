@@ -8,7 +8,7 @@
           "name": "uninteresting-topics",
           "type": "blacklist",
           "tokens": [
-            "Get a job", "Sponsored", "Pokémon"
+            "Get a job", "Sponsored", "Angry Birds", "Pokémon", "PS4", "Xbox"
           ]
         }
       ]
@@ -23,17 +23,18 @@
           "name": "uninteresting-topics",
           "type": "blacklist",
           "tokens": [
-            "#C", "\\.NET", "Angular", "BEM", "DuckDuckGo", "Java", "Kotlin",
+            "C#", "\\.NET", "Angular", "BEM", "DuckDuckGo", "Java", "Kotlin",
             "Lua", "MatLab", "OCaml", "Perl", "R", "Raspberry\\s?Pi", "Rust",
             "Surface Pro", "Xamarin", "Vim", "Emacs", "Bitcoin", "LaTeX",
-            "TypeScript", "C\\+\\+", "TPP"
+            "TypeScript", "C\\+\\+", "TPP", "Lisp", "Scheme", "Clojure", "F#"
           ]
         },
         {
           "name": "tired-topics",
           "type": "blacklist",
           "tokens": [
-            "Trump", "Bernie", "Hillary", "San Bernardino", "Theranos"
+            "Trump", "Bernie", "Hillary", "San Bernardino", "Theranos", "FBI",
+            "NSA"
           ]
         }
       ]
@@ -74,8 +75,8 @@
           "name": "tired-topics",
           "type": "blacklist",
           "tokens": [
-            "Trump", "Bernie", "Hillary", "San Bernardino", "Brexit", 
-            "Sharapova", "hoverboard"
+            "Trump", "Bernie", "Sanders", "Hillary", "Clinton", "San Bernardino",
+            "Brexit", "Sharapova", "hoverboard"
           ]
         }
       ]
