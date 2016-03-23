@@ -47,6 +47,7 @@ module.exports.request = function() {
 
 module.exports.normalizeLink = function(link) {
   var parsed = url.parse(link);
+  parsed.host = parsed.host.replace(/^www\./, '');
   return parsed.host + parsed.pathname;
 };
 
