@@ -1,5 +1,6 @@
 var app = require('connect')();
 var createRepostGuard = require('./src/repost-guard');
+var feeds = require('./config').feeds;
 var fs = require('fs');
 var log = require('./src/util').log;
 var path = require('path');
@@ -15,7 +16,7 @@ createRepostGuard.shared = createRepostGuard({
 });
 createRepostGuard.shared.setUp();
 
-require('./config').feeds.forEach(function(feed) {
+feeds.forEach(function(feed) {
   var middleware = require(path.join(__dirname, 'src/feeds', feed.name));
   app.use('/'+ feed.name, middleware.bind(null, feed));
 });
