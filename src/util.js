@@ -2,6 +2,8 @@ var fs = require('fs');
 var log = require('util').log;
 var url = require('url');
 
+// section: debugging
+
 var mode = process.env.NODE_ENV || 'development';
 module.exports.mode = mode;
 
@@ -33,6 +35,26 @@ function debugLog(label) {
 }
 module.exports.log = (mode !== 'development') ? function() {} : debugLog;
 
+// section: regex
+
+module.exports.patterns = {
+  domain: /:\/\/(?:www\.)?([^\/]+)/,
+  line: /\n/g,
+  createFromTokens: function(escapedTokens) {
+    return new RegExp('\\b(' +
+      escapedTokens.join('|').replace(/\s/g, '\\s') +
+    ')\\b');
+  }
+};
+
+// section: http
+
+module.exports.normalizeLink = function(link) {
+  var parsed = url.parse(link);
+  parsed.host = parsed.host.replace(/^www\./, '');
+  return parsed.host + parsed.pathname;
+};
+
 module.exports.request = function() {
   var module, protocol;
   if (typeof arguments[0] === 'string') {
@@ -45,21 +67,7 @@ module.exports.request = function() {
   return module.request.apply(null, arguments);
 };
 
-module.exports.normalizeLink = function(link) {
-  var parsed = url.parse(link);
-  parsed.host = parsed.host.replace(/^www\./, '');
-  return parsed.host + parsed.pathname;
-};
-
-module.exports.patterns = {
-  domain: /:\/\/(?:www\.)?([^\/]+)/,
-  line: /\n/g,
-  createFromTokens: function(escapedTokens) {
-    return new RegExp('\\b(' +
-      escapedTokens.join('|').replace(/\s/g, '\\s') +
-    ')\\b');
-  }
-};
+// section: fs
 
 function handleFileError(delegate, retry, error) {
   if (error.code === 'ENOENT') {
@@ -118,6 +126,8 @@ function writeFile(delegate) {
 module.exports.appendFile = appendFile;
 module.exports.readFile = readFile;
 module.exports.writeFile = writeFile;
+
+// section: async
 
 module.exports.callOn = function(calls, fn) {
   var remaining = calls - 1;
