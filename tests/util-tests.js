@@ -18,4 +18,19 @@ test("does not include 'www'", function() {
 });
 
 
+runner.subject('callOn');
+
+test('returns function that calls original on nth call', function() {
+  var calls = 0;
+  function fn() { calls += 1; }
+  var deferredFn = util.callOn(2, fn);
+  deferredFn();
+  assert.equal(calls, 0, 'not yet called');
+  deferredFn();
+  assert.equal(calls, 1, 'called');
+  deferredFn();
+  assert.equal(calls, 2, 'subsequent calls pass through');
+});
+
+
 runner.report();
