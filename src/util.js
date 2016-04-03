@@ -139,3 +139,13 @@ module.exports.callOn = function(calls, fn) {
     fn();
   };
 };
+
+// section: string
+
+module.exports.nthIndexOf = function(string, search, n) {
+  var i;
+  for (i = 0; n > 0 && i !== -1; n -= 1) {
+    i = string.indexOf(search, /* fromIndex */ i ? (i + 1) : i);
+  }
+  return i;
+};

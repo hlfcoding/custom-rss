@@ -12,11 +12,16 @@ module.exports = function createEntryLogger(delegate) {
         this.dataChanged = true;
       }
       var data = this.data + line;
-      var firstLineEnd = data.indexOf('\n');
-      if (this.lines === delegate.lineLimit) {
-        this.archiveBuffer += data.substring(0, firstLineEnd + 1);
-        data = data.substring(firstLineEnd);
+      var lines = this.lines + 1;
+
+      var archiveUntil;
+      if (lines > delegate.lineLimit) {
+        // End index of lines past the limit, include '\n'.
+        archiveUntil = util.nthIndexOf(data, '\n', lines - delegate.lineLimit) + 1;
+        this.archiveBuffer += data.substring(0, archiveUntil);
+        data = data.substring(archiveUntil);
       }
+
       this.setData(data);
     },
 

@@ -33,4 +33,19 @@ test('returns function that calls original on nth call', function() {
 });
 
 
+runner.subject('nthIndexOf');
+
+test('returns nth index of search value', function() {
+  var string = 'first line\nsecond line\nthird line\n';
+  assert.equal(util.nthIndexOf(string, '\n', 2), 22);
+  assert.equal(util.nthIndexOf(string, 'f', 1), 0, 'handles edge cases');
+});
+
+test("returns '-1' if not found, like indexOf", function() {
+  var string = 'first line\nsecond line\nthird line\n';
+  assert.equal(util.nthIndexOf(string, '\n', 4), -1, 'not found if out of bounds');
+  assert.equal(util.nthIndexOf(string, '1', 1), -1, 'not found if true');
+});
+
+
 runner.report();
