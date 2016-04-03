@@ -132,7 +132,10 @@ module.exports.writeFile = writeFile;
 module.exports.callOn = function(calls, fn) {
   var remaining = calls - 1;
   return function() {
-    if (remaining > 0) { return remaining--; }
+    if (remaining > 0) {
+      remaining -= 1;
+      return;
+    }
     fn();
   };
 };

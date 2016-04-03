@@ -74,7 +74,8 @@ module.exports = function createRepostGuard(delegate) {
     currentPageIndex: function() {
       var i = delegate.feedPageSize;
       var index;
-      while (i--) {
+      while (i) {
+        i -= 1;
         index = this.data.lastIndexOf('\n', index - 1);
         if (index === -1) {
           index = 0;
