@@ -76,20 +76,6 @@ module.exports = function createRepostGuard(delegate) {
       this.setData(data);
     },
 
-    currentPageIndex: function() {
-      var i = delegate.feedPageSize;
-      var index;
-      while (i) {
-        i -= 1;
-        index = this.data.lastIndexOf('\n', index - 1);
-        if (index === -1) {
-          index = 0;
-          break;
-        }
-      }
-      return index;
-    },
-
     resetData: function() {
       this.data = this.dataToCheck = null;
       this.dataChanged = false;
@@ -98,9 +84,11 @@ module.exports = function createRepostGuard(delegate) {
 
     setData: function(data) {
       this.data = data;
-      this.dataToCheck = data.substring(0, this.currentPageIndex());
       var matchResults = data.match(util.patterns.line);
       this.lines = matchResults ? matchResults.length : 0;
+
+      var currentPageIndex = util.nthLastIndexOf(this.data, '\n', delegate.feedPageSize);
+      this.dataToCheck = data.substring(0, (currentPageIndex === -1) ? 0 : currentPageIndex);
     },
 
     storeFile: function() {

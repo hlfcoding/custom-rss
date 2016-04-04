@@ -47,6 +47,17 @@ test('returns function that calls original on nth call', function() {
     assert.equal(util.nthIndexOf(string, '\n', 4), -1, 'not found if out of bounds');
     assert.equal(util.nthIndexOf(string, '1', 1), -1, 'not found if true');
   });
+
+  runner.subject('nthLastIndexOf');
+
+  test('returns nth last index of search value', function() {
+    assert.equal(util.nthLastIndexOf(string, '\n', 2), 22);
+  });
+
+  test("returns '-1' if not found, like lastIndexOf", function() {
+    assert.equal(util.nthLastIndexOf(string, '\n', 4), -1, 'not found if out of bounds');
+    assert.equal(util.nthLastIndexOf(string, '1', 1), -1, 'not found if true');
+  });
 }());
 
 

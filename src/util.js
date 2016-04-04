@@ -149,3 +149,11 @@ module.exports.nthIndexOf = function(string, search, n) {
   }
   return i;
 };
+
+module.exports.nthLastIndexOf = function(string, search, n) {
+  var i;
+  for (i = string.length; n > 0 && i !== -1; n -= 1) {
+    i = string.lastIndexOf(search, /* fromIndex */ i ? (i - 1) : i);
+  }
+  return i;
+};
