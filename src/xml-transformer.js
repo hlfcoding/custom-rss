@@ -34,6 +34,8 @@ function lazyCreateTagRegExp(tagName) {
 }
 
 module.exports = function createXMLTransformer(delegate) {
+  // delegate.string: an xml string
+  // delegate.verbose: a bool
   return {
     creator: createXMLTransformer,
 

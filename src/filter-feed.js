@@ -38,6 +38,15 @@ function defaultShouldSkipEntry(entry, finders, filters, repostGuard) {
 }
 
 function main(delegate) {
+  // delegate.config.filters: an array of filter objects for createFilters
+  // delegate.data: an xml string
+  // delegate.findId: a function returning id string for xml-transformer 'entry'
+  // delegate.find(Entry|Link|Title): optional functions return data for xml-transformer 'entry'
+  // delegate.guardReposts: a bool
+  // delegate.logger: a logger whose 'logEntry' takes a dictionary
+  // delegate.shouldSkipEntry: 
+  // delegate.transform(Entry|Meta): optional transform functions that mutate given xml-transformer's 'string'
+
   var filters = createFilters(delegate.config.filters);
 
   var root = createXMLTransformer({

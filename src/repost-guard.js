@@ -2,6 +2,11 @@ var path = require('path');
 var util = require('./util');
 
 module.exports = function createRepostGuard(delegate) {
+  // delegate.directory: a full path
+  // delegate.feedPageSize: a natural integer
+  // delegate.lineLimit: a natural integer
+  // delegate.sync: a bool
+  // delegate.onReady: a function, if 'sync' is off
   return {
     checkLink: function(link) {
       if (this.data === null) { throw 'no links data loaded'; }

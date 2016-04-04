@@ -1,6 +1,11 @@
 var util = require('./util');
 
 module.exports = function fetchFeed(delegate) {
+  // delegate.url: a url string
+  // delegate.verbose: a bool
+  // delegate.onError: an error handler
+  // delegate.onResponse: a response and data handler
+
   var request = util.request(delegate.url);
 
   request.on('error', function(e) {

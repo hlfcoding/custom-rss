@@ -2,6 +2,11 @@ var path = require('path');
 var util = require('./util');
 
 module.exports = function createEntryLogger(delegate) {
+  // delegate.directory: a full path
+  // delegate.feedName: a dasherized string
+  // delegate.lineLimit: a natural integer
+  // delegate.sync: a bool
+  // delegate.onReady: a function, if 'sync' is off
   return {
     logEntry: function(entry) {
       if (this.data === null) { throw 'no entry data loaded'; }
