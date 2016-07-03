@@ -24,7 +24,7 @@ function debugLog(label) {
     }
     string = label.toUpperCase() +': '+ string;
   } else {
-    string = 'LOG: '+ arguments[0];    
+    string = 'LOG: '+ arguments[0];
   }
 
   if (string.indexOf('\n') !== -1) {

@@ -37,6 +37,17 @@ function defaultShouldSkipEntry(entry, finders, filters, repostGuard) {
   return skip;
 }
 
+function mergeFinders(delegate) {
+  return {
+    entry: delegate.findEntry || defaultFinders.entry,
+
+    id: delegate.findId,
+    link: delegate.findLink || defaultFinders.link,
+    title: delegate.findTitle || defaultFinders.title
+  };
+}
+
+
 function main(delegate) {
   // delegate.config.filters: an array of filter objects for createFilters
   // delegate.data: an xml string
@@ -44,7 +55,7 @@ function main(delegate) {
   // delegate.find(Entry|Link|Title): optional functions return data for xml-transformer 'entry'
   // delegate.guardReposts: a bool
   // delegate.logger: a logger whose 'logEntry' takes a dictionary
-  // delegate.shouldSkipEntry: 
+  // delegate.shouldSkipEntry:
   // delegate.transform(Entry|Meta): optional transform functions that mutate given xml-transformer's 'string'
 
   var filters = createFilters(delegate.config.filters);
@@ -56,13 +67,8 @@ function main(delegate) {
     delegate.transformMeta(root);
   }
 
-  var finders = {
-    entry: delegate.findEntry || defaultFinders.entry,
-    id: delegate.findId,
-    link: delegate.findLink || defaultFinders.link,
-    title: delegate.findTitle || defaultFinders.title
-  };
-  var guard; 
+  var finders = mergeFinders(delegate);
+  var guard;
   if (delegate.guardReposts !== false) {
     guard = createRepostGuard.shared;
   }
