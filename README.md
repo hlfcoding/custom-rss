@@ -20,7 +20,62 @@
 
 ### Usage
 
-The sample app is what's in the root directory. It's a barebones Connect app, with personal configuration in `config.json`. This is foremost for personal use, but what's in `/src` should be reusable with any Connect-like web framework.
+The sample app is what's in the root directory. It's a barebones Connect app, with personal configuration in `config.json`. This is foremost for personal use, but what's in `/src` should be reusable with any Connect-like web framework. Or to use as-is:
+
+```shell
+$ npm run develop
+$ subl config.json # continued below
+$ subl src/feeds/feedd.js # continued below
+$ npm run deploy
+$ git push origin master
+
+$ ssh <production>
+$ cd <site> # or `mkdir <site>; cd <site>`
+$ git pull origin master # or `git clone <repo>`
+$ npm start # or touch tmp/restart.txt
+$ exit
+
+$ curl <site-url>/feedd
+```
+
+```js
+// config.json
+{
+  "feeds": [
+    // ...
+    {
+      "name": "feedd",
+      "filters": [
+        { "name": "tired-topics", "type": "blacklist", "tokens": [ "Foo", "Bar", "Baz" ] }
+      ]
+    }
+  ]
+}
+
+// src/feeds/feedd.js
+var fetchFeed = require('../fetch-feed');
+var filterFeed = require('../filter-feed');
+var url = require('url');
+
+module.exports = function(config, request, response) {
+  config.originalURL = 'http://feedd.com/rss.xml';
+  config.url = url.format({
+    protocol: 'http', host: request.headers.host, pathname: config.name
+  });
+  fetchFeed({
+    url: config.originalURL,
+    onResponse: function(resFetch, data) {
+      response.setHeader('Content-Type', resFetch.headers['content-type']);
+      filterFeed({
+        config: config,
+        data: data,
+        onDone: function(data) { response.end(data); }
+      });
+    },
+    onError: function(e) { response.end(e.message); }
+  });
+};
+```
 
 ### Feeds
 
