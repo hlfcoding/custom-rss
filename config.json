@@ -10,6 +10,13 @@
           "tokens": [
             "Get a job", "Sponsored", "Angry Birds", "Pokémon", "PS4", "Xbox"
           ]
+        },
+        {
+          "name": "tired-topics",
+          "type": "blacklist",
+          "tokens": [
+            "Oculus", "Vive"
+          ]
         }
       ]
     },
@@ -26,7 +33,8 @@
             "C#", "\\.NET", "Angular", "BEM", "DuckDuckGo", "Java", "Kotlin",
             "Lua", "MatLab", "OCaml", "Perl", "R", "Raspberry\\s?Pi", "Rust",
             "Surface Pro", "Xamarin", "Vim", "Emacs", "Bitcoin", "LaTeX",
-            "TypeScript", "C\\+\\+", "TPP", "Lisp", "Scheme", "Clojure", "F#"
+            "TypeScript", "C\\+\\+", "TPP", "Lisp", "Scheme", "Clojure", "F#",
+            "Mesos", "Azure", "Material Design", "Tor"
           ]
         },
         {
@@ -34,7 +42,7 @@
           "type": "blacklist",
           "tokens": [
             "Trump", "Bernie", "Hillary", "San Bernardino", "Theranos", "FBI",
-            "NSA"
+            "NSA", "Ethereum", "Brexit", "EU"
           ]
         }
       ]
