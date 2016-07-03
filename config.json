@@ -44,6 +44,12 @@
             "Trump", "Bernie", "Hillary", "San Bernardino", "Theranos", "FBI",
             "NSA", "Ethereum", "Brexit", "EU"
           ]
+        },
+        {
+          "name": "no-comments",
+          "input": "text-content",
+          "type": "black-pattern",
+          "pattern": ", 0 comments$"
         }
       ]
     },

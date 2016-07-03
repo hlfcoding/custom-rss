@@ -38,12 +38,24 @@ module.exports.log = (mode !== 'development') ? function() {} : debugLog;
 // section: regex
 
 module.exports.patterns = {
+  brackets: { open: /&lt;/g, close: /&gt;/g },
   domain: /:\/\/(?:www\.)?([^\/]+)/,
   line: /\n/g,
+  tag: /(<([^>]+)>)/g,
+
   createFromTokens: function(escapedTokens) {
     return new RegExp('\\b(' +
       escapedTokens.join('|').replace(/\s/g, '\\s') +
     ')\\b');
+  },
+
+  decodeTags: function(string) {
+    return string.replace(this.brackets.open, '<')
+      .replace(this.brackets.close, '>');
+  },
+
+  stripTags: function(string) {
+    return this.decodeTags(string).replace(this.tag, '');
   }
 };
 

@@ -6,6 +6,14 @@ var util = require('../src/util');
 runner.subject('util');
 
 
+runner.subject('stripTags');
+
+test('decodes then strips tags', function() {
+  var html = '&lt;p&gt;1 point, &lt;a href=&quot;https://news.ycombinator.com/item?id=12024279&quot;&gt;0 comments&lt;/a&gt;&lt;/p&gt;';
+  assert.equal(util.patterns.stripTags(html), '1 point, 0 comments');
+});
+
+
 runner.subject('normalizeLink');
 
 test('returns only host and pathname', function() {

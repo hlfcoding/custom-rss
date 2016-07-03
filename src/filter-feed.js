@@ -2,14 +2,20 @@ var createEntryLogger = require('./entry-logger');
 var createRepostGuard = require('./repost-guard');
 var createXMLTransformer = require('./xml-transformer');
 var util = require('./util');
+var patterns = util.patterns;
 
 var directory = require('path').join(__dirname, '../tmp');
 
 function createFilters(configs) {
   return configs.map(function(config) {
-    var filter = { name: config.name };
-    if (config.type === 'blacklist') {
-      filter.pattern = util.patterns.createFromTokens(config.tokens);
+    var filter = { name: config.name, input: config.input || 'title' };
+    switch (config.type) {
+      case 'blacklist':
+        filter.pattern = patterns.createFromTokens(config.tokens); break;
+      case 'black-pattern':
+        filter.pattern = new RegExp(config.pattern); break;
+      default:
+        throw 'unsupported filter type';
     }
     return filter;
   });
@@ -17,14 +23,29 @@ function createFilters(configs) {
 
 var defaultFinders = {
   entry: function(root) { return root.find('entry'); },
+
+  content: function(entry) { return entry.find('content'); },
   link: function(entry) { return entry.find('link'); },
   title: function(entry) { return entry.find('title'); }
 };
 
 function defaultShouldSkipEntry(entry, finders, filters, repostGuard) {
-  var title = finders.title(entry);
+  var text, title;
   var skip = filters.reduce(function(skip, filter) {
-    return skip || filter.pattern.test(title);
+    var input;
+    switch (filter.input) {
+      case 'text-content':
+        if (!text) { text = patterns.stripTags(finders.content(entry)); }
+        input = text;
+        break;
+      case 'title':
+        if (!title) { title = finders.title(entry); }
+        input = title;
+        break;
+      default:
+        throw 'unsupported input type';
+    }
+    return skip || filter.pattern.test(input);
   }, false);
   if (skip) { skip = 'blocked'; }
 
@@ -41,6 +62,7 @@ function mergeFinders(delegate) {
   return {
     entry: delegate.findEntry || defaultFinders.entry,
 
+    content: delegate.findContent || defaultFinders.content,
     id: delegate.findId,
     link: delegate.findLink || defaultFinders.link,
     title: delegate.findTitle || defaultFinders.title
