@@ -5,7 +5,7 @@
 [![Package](https://img.shields.io/npm/v/custom-rss.svg?style=flat)](https://www.npmjs.com/package/custom-rss)
 [![License](https://img.shields.io/npm/l/custom-rss.svg?style=flat)](https://github.com/hlfcoding/custom-rss/blob/master/LICENSE)
 
-:zap: Filtering RSS because Zapier is too expensive (and Pipes is gone).
+:satellite: Filtering RSS because Zapier is too expensive (and Pipes is gone).
 
 ### Features
 
