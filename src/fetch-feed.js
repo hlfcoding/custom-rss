@@ -17,6 +17,14 @@ module.exports = function fetchFeed(delegate) {
     util.log('status', response.statusCode);
     util.log('headers', JSON.stringify(response.headers));
 
+    if (response.statusCode !== 200) {
+      delegate.onError({
+        code: response.statusCode,
+        message: response.statusMessage
+      });
+      return;
+    }
+
     var data = '';
     response.setEncoding('utf8');
     response.on('data', function(chunk) {
