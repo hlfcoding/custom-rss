@@ -20,7 +20,7 @@ module.exports = function fetchFeed(delegate) {
     var data = '';
     response.setEncoding('utf8');
     response.on('data', function(chunk) {
-      data += chunk; 
+      data += chunk;
     }).on('end', function() {
       if (delegate.verbose) { util.log('data', data); }
       delegate.onResponse(response, data);
