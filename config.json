@@ -30,7 +30,7 @@
           "name": "uninteresting-topics",
           "type": "blacklist",
           "tokens": [
-            "C#", "\\.NET", "Angular", "BEM", "DuckDuckGo", "Java", "Kotlin",
+            "C#", "\\.NET", "Angular", "BEM", "DuckDuckGo", "Java",
             "Lua", "MatLab", "OCaml", "Perl", "R", "Raspberry\\s?Pi", "Rust",
             "Surface Pro", "Xamarin", "Vim", "Emacs", "Bitcoin", "LaTeX",
             "TypeScript", "C\\+\\+", "TPP", "Lisp", "Scheme", "Clojure", "F#",
@@ -42,7 +42,7 @@
           "type": "blacklist",
           "tokens": [
             "Trump", "Bernie", "Hillary", "San Bernardino", "Theranos", "FBI",
-            "NSA", "Ethereum", "Brexit", "EU"
+            "NSA", "Ethereum", "Brexit", "EU", "Meltdown", "Spectre"
           ]
         },
         {
