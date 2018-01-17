@@ -81,7 +81,7 @@
           "name": "uninteresting-topics",
           "type": "blacklist",
           "tokens": [
-            "Jenner", "Indian?s?", "Modi", "Mallya", "Jaitley",
+            "Jenner", "Indian?s?", "Modi", "Mallya", "Jaitley", "Rajinikanth",
             "Quartz Daily Brief", "Quartz Weekend Brief"
           ]
         },
@@ -89,8 +89,8 @@
           "name": "tired-topics",
           "type": "blacklist",
           "tokens": [
-            "Trump", "Bernie", "Sanders", "Hillary", "Clinton", "San Bernardino",
-            "Brexit", "Sharapova", "hoverboard"
+            "Trump", "Bernie", "Hillary", "Clinton", "San Bernardino",
+            "Brexit", "hoverboard", "marijuana", "Jeff Sessions"
           ]
         }
       ]
