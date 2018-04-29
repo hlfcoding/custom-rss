@@ -14,8 +14,7 @@ function createFilters(configs) {
         filter.pattern = patterns.createFromTokens(config.tokens); break;
       case 'black-pattern':
         filter.pattern = new RegExp(config.pattern); break;
-      default:
-        throw 'unsupported filter type';
+      default: throw 'unsupported filter type';
     }
     return filter;
   });
@@ -42,8 +41,7 @@ function defaultShouldSkipEntry(entry, finders, filters, repostGuard) {
         if (!title) { title = finders.title(entry); }
         input = title;
         break;
-      default:
-        throw 'unsupported input type';
+      default: throw 'unsupported input type';
     }
     return skip || filter.pattern.test(input);
   }, false);
