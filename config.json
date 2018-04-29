@@ -30,11 +30,10 @@
           "name": "uninteresting-topics",
           "type": "blacklist",
           "tokens": [
-            "C#", "\\.NET", "Angular", "BEM", "DuckDuckGo", "Java",
-            "Lua", "MatLab", "OCaml", "Perl", "R", "Raspberry\\s?Pi", "Rust",
-            "Surface Pro", "Xamarin", "Vim", "Emacs", "Bitcoin", "LaTeX",
-            "TypeScript", "C\\+\\+", "TPP", "Lisp", "Scheme", "Clojure", "F#",
-            "Mesos", "Azure", "Material Design", "Tor"
+            "\\.NET", "Angular", "BEM", "Clojure", "F#", "Java", "Lisp", "Lua",
+            "MatLab", "OCaml", "Perl", "R", "Scheme", "Xamarin", "Emacs",
+            "LaTeX", "Vim", "Azure", "DuckDuckGo", "Mesos", "Raspberry\\s?Pi",
+            "Surface Pro", "Material Design"
           ]
         },
         {
@@ -42,7 +41,7 @@
           "type": "blacklist",
           "tokens": [
             "Trump", "Bernie", "Hillary", "San Bernardino", "Theranos", "FBI",
-            "NSA", "Ethereum", "Brexit", "EU", "Meltdown", "Spectre", "James Damore"
+            "NSA", "Brexit", "EU", "Meltdown", "Spectre", "James Damore"
           ]
         },
         {
@@ -50,6 +49,14 @@
           "input": "text-content",
           "type": "black-pattern",
           "pattern": ", 0 comments$"
+        },
+        {
+          "name": "noisy",
+          "type": "graylist",
+          "tokens": [
+            "Amazon", "Apple", "Facebook", "Google", "Netflix", "SpaceX",
+            "Tesla", "Bitcoin", "Ethereum"
+          ]
         }
       ]
     },
