@@ -7,7 +7,8 @@ runner.subject('filterFeed');
 
 var fixtureFiltersConfig = [
   { name: 'foo', type: 'blacklist', tokens: ['Foo'] },
-  { name: 'bar', type: 'blacklist', tokens: ['Bar'] }
+  { name: 'bar', type: 'blacklist', tokens: ['Bar'] },
+  { name: 'baz', type: 'graylist', tokens: ['Baz'] }
 ];
 
 
@@ -54,6 +55,18 @@ test('otherwise returns false', function() {
   var entryToKeep = { title: 'Some title', link: 'foo.com' };
   var skip = defaultShouldSkipEntry(entryToKeep, mockFinders, filters, mockRepostGuard);
   assert(!skip);
+});
+
+test('also returns false for questionable posts, tags title ', function() {
+  var entryToKeep = { title: 'Some title with Baz', link: 'baz.com',
+    transformContent: function(tagName, args) {
+      assert.equal(tagName, 'title');
+      this.title = args.to();
+    }
+  };
+  var skip = defaultShouldSkipEntry(entryToKeep, mockFinders, filters, mockRepostGuard);
+  assert(!skip);
+  assert.equal(entryToKeep.title.indexOf('[baz] '), 0);
 });
 
 
