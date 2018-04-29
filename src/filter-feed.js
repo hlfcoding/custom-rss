@@ -8,9 +8,10 @@ var directory = require('path').join(__dirname, '../tmp');
 
 function createFilters(configs) {
   return configs.map(function(config) {
-    var filter = { name: config.name, input: config.input || 'title' };
+    var filter = { name: config.name, type: config.type, input: config.input || 'title' };
     switch (config.type) {
       case 'blacklist':
+      case 'graylist':
         filter.pattern = patterns.createFromTokens(config.tokens); break;
       case 'black-pattern':
         filter.pattern = new RegExp(config.pattern); break;
@@ -31,7 +32,10 @@ var defaultFinders = {
 function defaultShouldSkipEntry(entry, finders, filters, repostGuard) {
   var text, title;
   var skip = filters.reduce(function(skip, filter) {
-    var input;
+    var input, matches;
+    if (skip) {
+      return skip;
+    }
     switch (filter.input) {
       case 'text-content':
         if (!text) { text = patterns.stripTags(finders.content(entry)); }
@@ -43,7 +47,19 @@ function defaultShouldSkipEntry(entry, finders, filters, repostGuard) {
         break;
       default: throw 'unsupported input type';
     }
-    return skip || filter.pattern.test(input);
+    matches = filter.pattern.test(input);
+    if (matches && filter.type === 'graylist') {
+      switch (filter.input) {
+        case 'title':
+          entry.transformContent('title', { to: function(match) {
+            return '['+ filter.name +'] '+ title;
+          }});
+          break;
+        default: throw 'unsupported input type';
+      }
+      return false;
+    }
+    return matches;
   }, false);
   if (skip) { skip = 'blocked'; }
 
