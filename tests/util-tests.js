@@ -6,7 +6,7 @@ var util = require('../src/util');
 runner.subject('util');
 
 
-runner.subject('stripTags');
+runner.subject('.stripTags');
 
 test('decodes then strips tags', function() {
   var html = '&lt;p&gt;1 point, &lt;a href=&quot;https://news.ycombinator.com/item?id=12024279&quot;&gt;0 comments&lt;/a&gt;&lt;/p&gt;';
@@ -14,7 +14,7 @@ test('decodes then strips tags', function() {
 });
 
 
-runner.subject('normalizeLink');
+runner.subject('.normalizeLink');
 
 test('returns only host and pathname', function() {
   var link = 'http://some-domain.com/some-path?some-query#some-fragment';
@@ -26,7 +26,7 @@ test("does not include 'www'", function() {
 });
 
 
-runner.subject('callOn');
+runner.subject('.callOn');
 
 test('returns function that calls original on nth call', function() {
   var calls = 0;
@@ -44,7 +44,7 @@ test('returns function that calls original on nth call', function() {
 (function() {
   var string = 'first line\nsecond line\nthird line\n';
 
-  runner.subject('nthIndexOf');
+  runner.subject('.nthIndexOf');
 
   test('returns nth index of search value', function() {
     assert.equal(util.nthIndexOf(string, '\n', 2), 22);
@@ -56,7 +56,7 @@ test('returns function that calls original on nth call', function() {
     assert.equal(util.nthIndexOf(string, '1', 1), -1, 'not found if true');
   });
 
-  runner.subject('nthLastIndexOf');
+  runner.subject('.nthLastIndexOf');
 
   test('returns nth last index of search value', function() {
     assert.equal(util.nthLastIndexOf(string, '\n', 2), 22);

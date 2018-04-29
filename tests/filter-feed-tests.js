@@ -12,7 +12,7 @@ var fixtureFiltersConfig = [
 
 
 var createFilters = filterFeed.createFilters;
-runner.subject('createFilters');
+runner.subject('.createFilters');
 
 test('creates filters from configs', function() {
   var filters = createFilters(fixtureFiltersConfig);
@@ -28,31 +28,31 @@ test('creates filters from configs', function() {
 
 
 var filters = createFilters(fixtureFiltersConfig);
-var finders = {
-  link: function(entry) { return entry.link; },
-  title: function(entry) { return entry.title; }
+var mockFinders = {
+  link: function(mockEntry) { return mockEntry.link; },
+  title: function(mockEntry) { return mockEntry.title; }
 };
-var repostGuard = {
+var mockRepostGuard = {
   checkLink: function(link) { return link !== 'repost.com'; }
 };
 var defaultShouldSkipEntry = filterFeed.defaultShouldSkipEntry;
-runner.subject('defaultShouldSkipEntry');
+runner.subject('.defaultShouldSkipEntry');
 
 test("returns 'blocked' reason for filtered posts", function() {
   var entryToBlock = { title: 'Some title with Foo', link: 'foo.com' };
-  var skip = defaultShouldSkipEntry(entryToBlock, finders, filters, repostGuard);
+  var skip = defaultShouldSkipEntry(entryToBlock, mockFinders, filters, mockRepostGuard);
   assert.equal(skip, 'blocked');
 });
 
 test("returns 'repost' reason for duplicate posts", function() {
   var entryToDedupe = { title: 'Some title', link: 'repost.com' };
-  var skip = defaultShouldSkipEntry(entryToDedupe, finders, filters, repostGuard);
+  var skip = defaultShouldSkipEntry(entryToDedupe, mockFinders, filters, mockRepostGuard);
   assert.equal(skip, 'repost');
 });
 
 test('otherwise returns false', function() {
   var entryToKeep = { title: 'Some title', link: 'foo.com' };
-  var skip = defaultShouldSkipEntry(entryToKeep, finders, filters, repostGuard);
+  var skip = defaultShouldSkipEntry(entryToKeep, mockFinders, filters, mockRepostGuard);
   assert(!skip);
 });
 
