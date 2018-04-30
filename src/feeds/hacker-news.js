@@ -3,7 +3,7 @@ var filterFeed = require('../filter-feed');
 var patterns = require('../util').patterns;
 var url = require('url');
 
-var rScorePrefix = /^\d+\s+\S+\s+/;
+var rScorePrefix = /^(\[\w+\]\s)?\d+\s+\S+\s+/;
 
 function createDomainSuffix(entry) {
   var link = entry.find('link', 'href') || '';
@@ -17,7 +17,7 @@ function transformMeta(root) {
 function transformTitle(entry) {
   function replace(match) {
     // No score.
-    var replaced = match.replace(rScorePrefix, '');
+    var replaced = match.replace(rScorePrefix, '$1');
     // Add domain if any.
     replaced += createDomainSuffix(entry);
     return replaced;
