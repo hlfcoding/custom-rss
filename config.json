@@ -41,7 +41,7 @@
           "type": "blacklist",
           "tokens": [
             "Trump", "Bernie", "Hillary", "San Bernardino", "Theranos", "FBI",
-            "NSA", "Brexit", "EU", "Meltdown", "Spectre", "James Damore"
+            "NSA", "Brexit", "EU", "Meltdown", "Spectre", "Damore", "Zuckerberg"
           ]
         },
         {
@@ -55,7 +55,7 @@
           "type": "graylist",
           "tokens": [
             "Amazon", "Apple", "Facebook", "Google", "Netflix", "SpaceX",
-            "Tesla", "Bitcoin", "Ethereum"
+            "Tesla", "Bitcoin", "China", "Ethereum", "North Korea", "Russia"
           ]
         }
       ]
