@@ -101,6 +101,14 @@
             "Trump", "Bernie", "Hillary", "Clinton", "San Bernardino",
             "Brexit", "hoverboard", "marijuana", "Jeff Sessions", "Silicon Valley"
           ]
+        },
+        {
+          "name": "noisy",
+          "type": "graylist",
+          "tokens": [
+            "Amazon", "Apple", "Facebook", "Google", "Netflix", "SpaceX",
+            "Tesla"
+          ]
         }
       ]
     },
