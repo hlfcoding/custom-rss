@@ -20,8 +20,7 @@ module.exports = function(config, request, response) {
       filterFeed({
         config: config,
         data: data,
-        findEntry: function(root) { return root.find('item'); },
-        findId: function(entry) { return entry.find('guid'); },
+        findId: function(entry) { return entry.find('id'); },
         guardReposts: false,
         transformMeta: transformMeta,
         verbose: true,
