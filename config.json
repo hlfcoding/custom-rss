@@ -120,7 +120,8 @@
           "name": "uninteresting-topics",
           "type": "blacklist",
           "tokens": [
-            "Video Tutorial", "Open Call For Applications", "SUBSCRIBER"
+            "Open Call For Applications", "Opportunity: ", "SUBSCRIBER",
+            "Video Tutorial"
           ]
         }
       ]
