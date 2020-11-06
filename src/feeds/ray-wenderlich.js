@@ -6,6 +6,13 @@ function transformMeta(root) {
   root.transformContent('title', { to: 'Ray Wenderlich (filtered)' });
 }
 
+function transformTitle(entry) {
+  function replace(match) {
+    return match.replace(' [FREE]', '');
+  }
+  entry.transformContent('title', { to: replace });
+}
+
 module.exports = function(config, request, response) {
   config.originalURL = 'https://www.raywenderlich.com/feed?max-results=1';
   config.url = url.format({
@@ -22,6 +29,7 @@ module.exports = function(config, request, response) {
         data: data,
         findId: function(entry) { return entry.find('id'); },
         guardReposts: false,
+        transformEntry: transformTitle,
         transformMeta: transformMeta,
         verbose: true,
         onDone: function(data) {
