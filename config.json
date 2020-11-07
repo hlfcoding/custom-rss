@@ -8,7 +8,8 @@
           "name": "uninteresting-topics",
           "type": "blacklist",
           "tokens": [
-            "Get a job", "Sponsored", "Angry Birds", "Pokémon", "PS4", "Xbox"
+            "Get a job", "Sponsored", "Video: ",
+            "Angry Birds", "Pokémon", "PS4", "Xbox"
           ]
         },
         {
