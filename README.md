@@ -27,7 +27,6 @@ $ npm run develop
 $ subl config.json # continued below
 $ subl src/feeds/feedd.js # continued below
 $ npm run deploy
-$ git push origin master
 
 $ ssh <production>
 $ cd <site> # or `mkdir <site>; cd <site>`
