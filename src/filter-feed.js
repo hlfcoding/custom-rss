@@ -32,7 +32,7 @@ var defaultFinders = {
 function defaultShouldSkipEntry(entry, finders, filters, repostGuard) {
   var text, title;
   var skip = filters.reduce(function(skip, filter) {
-    var input, matches;
+    var input, isMatch;
     if (skip) {
       return skip;
     }
@@ -47,8 +47,8 @@ function defaultShouldSkipEntry(entry, finders, filters, repostGuard) {
         break;
       default: throw 'unsupported input type';
     }
-    matches = filter.pattern.test(input);
-    if (matches && filter.type === 'graylist') {
+    isMatch = filter.pattern.test(input);
+    if (isMatch && filter.type === 'graylist') {
       switch (filter.input) {
         case 'title':
           entry.transformContent('title', { to: function(match) {
@@ -59,7 +59,7 @@ function defaultShouldSkipEntry(entry, finders, filters, repostGuard) {
       }
       return false;
     }
-    return matches;
+    return isMatch;
   }, false);
   if (skip) { skip = 'blocked'; }
 
