@@ -1,3 +1,5 @@
+'use strict';
+
 var log = require('./util').log;
 var rAttrs = {};
 var rHasTag = /<\/.+?>/; // Check closing tag.

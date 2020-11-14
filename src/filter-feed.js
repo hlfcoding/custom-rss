@@ -1,3 +1,5 @@
+'use strict';
+
 var createEntryLogger = require('./entry-logger');
 var createRepostGuard = require('./repost-guard');
 var createXMLTransformer = require('./xml-transformer');

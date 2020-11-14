@@ -1,3 +1,5 @@
+'use strict';
+
 var app = require('connect')();
 var createRepostGuard = require('./src/repost-guard');
 var feeds = require('./config').feeds;

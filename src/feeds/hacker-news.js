@@ -1,3 +1,5 @@
+'use strict';
+
 var fetchFeed = require('../fetch-feed');
 var filterFeed = require('../filter-feed');
 var patterns = require('../util').patterns;
