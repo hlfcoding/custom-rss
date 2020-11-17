@@ -4,6 +4,11 @@ var fs = require('fs');
 var log = require('util').log;
 var url = require('url');
 
+var protocolModules = {
+  http: require('http'),
+  https: require('https')
+};
+
 // section: debugging
 
 var mode = process.env.NODE_ENV || 'development';
@@ -77,7 +82,7 @@ module.exports.request = function() {
     protocol = arguments[0].protocol;
   }
   // http/s (`Error: Protocol "https:" not supported. Expected "http:".`)
-  module = require(protocol.replace(':', ''));
+  module = protocolModules[protocol.replace(':', '')];
   return module.request.apply(null, arguments);
 };
 
