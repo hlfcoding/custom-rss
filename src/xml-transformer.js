@@ -24,7 +24,7 @@ function lazyCreateTagRegExp(tagName) {
   if (!rTags[tagName]) {
     var pattern = (
       // Opening tag, allows whitespace and breaks.
-      '<'+ tagName +'[^]*?>\\s*' + 
+      '<'+ tagName +'[^]*?>\\s*' +
       // Content, lazy, allows whitespace and breaks.
       '([^]+?)' +
       // Closing tag, allows whitespace and breaks.
