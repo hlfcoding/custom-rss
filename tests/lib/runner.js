@@ -1,3 +1,5 @@
+'use strict';
+
 var afterEach, beforeEach, failed, total;
 failed = total = 0;
 

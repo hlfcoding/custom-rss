@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('assert');
 var runner = require('./lib/runner');
 var test = runner.test.bind(runner);

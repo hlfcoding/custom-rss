@@ -19,7 +19,7 @@
     "deploy:pre": "rm -rf node_modules/* && npm install --production",
     "deploy:post": "npm install && to_server",
     "deploy": "npm run deploy:pre && git push && npm run deploy:post",
-    "test": "node --use_strict tests/index.js"
+    "test": "node tests/index.js"
   },
   "devDependencies": {
     "supervisor": "^0.9.1"
