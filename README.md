@@ -81,7 +81,6 @@ module.exports = function(config, request, response) {
 - [x] Hacker News (via [hnapp](http://hnapp.com))
 - [x] Quartz
 - [x] NYTimes Business
-- [x] Yahoo Tech
 - [x] Ray Wenderlich
 - [x] Gama Sutra
 

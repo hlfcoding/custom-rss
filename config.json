@@ -126,27 +126,6 @@
           ]
         }
       ]
-    },
-    {
-      "name": "yahoo-tech",
-
-      "filters": [
-        {
-          "name": "uninteresting-topics",
-          "type": "blacklist",
-          "tokens": [
-            "iPhone", "Playstation", "Raspberry\\s?Pi", "Xbox",
-            "Deal of the Day"
-          ]
-        },
-        {
-          "name": "tired-topics",
-          "type": "blacklist",
-          "tokens": [
-            "Trump", "Bernie", "Hillary", "San Bernardino", "hoverboard"
-          ]
-        }
-      ]
     }
   ]
 }

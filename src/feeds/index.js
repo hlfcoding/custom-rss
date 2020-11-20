@@ -4,5 +4,4 @@ module.exports = {
   nytBusiness: require('./nyt-business'),
   quartz: require('./quartz'),
   rayWenderlich: require('./ray-wenderlich'),
-  yahooTech: require('./yahoo-tech')
 };
