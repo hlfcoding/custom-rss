@@ -9,7 +9,7 @@ function transformMeta(root) {
 }
 
 module.exports = function(config, request, response) {
-  config.originalURL = 'https://qz.com/feed/';
+  config.originalURL = 'https://cms.qz.com/feed/';
   config.url = url.format({
     protocol: 'http', host: request.headers.host, pathname: config.name
   });
