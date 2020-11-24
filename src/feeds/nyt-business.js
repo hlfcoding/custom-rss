@@ -1,5 +1,7 @@
 'use strict';
 
+// NOTE: Unused, unmaintained.
+
 var fetchFeed = require('../fetch-feed');
 var filterFeed = require('../filter-feed');
 var url = require('url');
