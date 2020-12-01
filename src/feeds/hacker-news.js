@@ -5,11 +5,20 @@ var filterFeed = require('../filter-feed');
 var patterns = require('../util').patterns;
 var url = require('url');
 
+var rCommentsURL = /news.ycombinator.com\/item\?id=/;
 var rScorePrefix = /^(\[\w+\]\s)?\d+\s+\S+\s+/;
 
 function createDomainSuffix(entry) {
   var link = entry.find('link', 'href') || '';
   return (!link.length ? '' : ' ('+link.match(patterns.domain)[1]+')');
+}
+
+function transformContent(entry) {
+  function replace(match) {
+    var replaced = match.replace(rCommentsURL, 'hn.premii.com/#/comments/');
+    return replaced;
+  }
+  entry.transformContent('content', { to: replace });
 }
 
 function transformMeta(root) {
@@ -43,7 +52,10 @@ module.exports = function(config, request, response) {
         data: data,
         findId: function(entry) { return entry.find('id'); },
         findLink: function(entry) { return entry.find('link', 'href'); },
-        transformEntry: transformTitle,
+        transformEntry: function(entry) {
+          transformTitle(entry);
+          transformContent(entry);
+        },
         transformMeta: transformMeta,
         verbose: true,
         onDone: function(data) {
