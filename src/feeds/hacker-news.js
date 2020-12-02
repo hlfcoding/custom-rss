@@ -6,11 +6,16 @@ var patterns = require('../util').patterns;
 var url = require('url');
 
 var rCommentsURL = /news.ycombinator.com\/item\?id=/;
+var rCounts = /(\d+)\s(?:point|comment)s?/g;
 var rScorePrefix = /^(\[\w+\]\s)?\d+\s+\S+\s+/;
 
-function createDomainSuffix(entry) {
+function createSuffix(entry) {
+  var suffix = ' [';
+  var counts = entry.find('content').match(rCounts) || [];
+  suffix += counts.map(function(s) { return parseInt(s); }).join('|');
   var link = entry.find('link', 'href') || '';
-  return (!link.length ? '' : ' ('+link.match(patterns.domain)[1]+')');
+  suffix += (!link.length ? '' : '|'+link.match(patterns.domain)[1]);
+  return suffix+']';
 }
 
 function transformContent(entry) {
@@ -30,7 +35,7 @@ function transformTitle(entry) {
     // No score.
     var replaced = match.replace(rScorePrefix, '$1');
     // Add domain if any.
-    replaced += createDomainSuffix(entry);
+    replaced += createSuffix(entry);
     return replaced;
   }
   entry.transformContent('title', { to: replace });
