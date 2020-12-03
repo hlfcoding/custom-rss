@@ -46,7 +46,7 @@ module.exports.log = (mode !== 'development') ? function() {} : debugLog;
 
 module.exports.patterns = {
   brackets: { open: /&lt;/g, close: /&gt;/g },
-  domain: /:\/\/(?:www\.)?([^\/]+)/,
+  domain: /:\/\/(?:www\.)?([^\/]+)\.([^\/]+)/,
   line: /\n/g,
   tag: /(<([^>]+)>)/g,
 
