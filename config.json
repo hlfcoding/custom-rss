@@ -31,18 +31,15 @@
           "name": "uninteresting-topics",
           "type": "blacklist",
           "tokens": [
-            "\\.NET", "Angular", "BEM", "Clojure", "F#", "Java", "Lisp", "Lua",
-            "MatLab", "OCaml", "Perl", "R", "Scheme", "Xamarin", "Emacs",
-            "LaTeX", "Vim", "Azure", "DuckDuckGo", "Mesos", "Raspberry\\s?Pi",
-            "Surface Pro", "Material Design", "Vitamin D"
+            "\\.NET", "BEM", "Clojure", "F#", "Lisp", "MatLab", "OCaml",
+            "Perl", "R", "Scheme", "Emacs", "LaTeX", "Vim", "Vitamin D"
           ]
         },
         {
           "name": "tired-topics",
           "type": "blacklist",
           "tokens": [
-            "Trump", "Bernie", "Hillary", "San Bernardino", "Theranos", "FBI",
-            "NSA", "Brexit", "EU", "Meltdown", "Spectre", "Damore", "Zuckerberg"
+            "Trump"
           ]
         },
         {
