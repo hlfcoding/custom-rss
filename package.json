@@ -16,9 +16,6 @@
   "scripts": {
     "start": "NODE_ENV=production node app.js",
     "develop": "supervisor --watch . --debug -- app.js",
-    "deploy:pre": "rm -rf node_modules/* && npm install --production",
-    "deploy:post": "npm install && to_server",
-    "deploy": "npm run deploy:pre && git push && npm run deploy:post",
     "test": "node tests/index.js"
   },
   "devDependencies": {

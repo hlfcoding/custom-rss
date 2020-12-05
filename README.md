@@ -26,7 +26,7 @@ The sample app is what's in the root directory. It's a barebones Connect app, wi
 $ npm run develop
 $ subl config.json # continued below
 $ subl src/feeds/feedd.js # continued below
-$ npm run deploy
+$ git push origin master # git tag <tag> && git push origin <tag> && npm publish
 
 $ ssh <production>
 $ cd <site> # or `mkdir <site>; cd <site>`
